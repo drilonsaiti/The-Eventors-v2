@@ -7,18 +7,24 @@ import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.Comparator;
+
 @Entity
 @Data
 @NoArgsConstructor
-public class Category {
+public class CommentAndReplies {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    String name;
-    String description;
+    String message;
+    LocalDateTime createdAt;
+    String username;
 
-    public Category(String name, String description) {
-        this.name = name;
-        this.description = description;
+
+    public CommentAndReplies(String message, String username) {
+        this.message = message;
+        this.username = username;
+        this.createdAt = LocalDateTime.now();
     }
 }
