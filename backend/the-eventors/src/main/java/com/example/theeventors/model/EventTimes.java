@@ -1,9 +1,7 @@
 package com.example.theeventors.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,10 +15,10 @@ public class EventTimes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     LocalDateTime startTime;
-    int duration;
+    String duration;
     LocalDateTime createdTime;
 
-    public EventTimes(LocalDateTime startTime, int duration) {
+    public EventTimes(LocalDateTime startTime, String duration) {
         this.startTime = startTime;
         this.duration = duration;
         this.createdTime = LocalDateTime.now();

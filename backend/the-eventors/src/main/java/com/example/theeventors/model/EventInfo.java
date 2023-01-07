@@ -1,9 +1,7 @@
 package com.example.theeventors.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,13 +17,18 @@ public class EventInfo {
     String title;
     String description;
     String location;
-    String images;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    Image coverImage;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Image> images;
     String createdBy;
 
-    public EventInfo(String title, String description, String location, String images, String createdBy) {
+    public EventInfo(String title, String description, String location, Image coverImage,List<Image> images, String createdBy) {
         this.title = title;
         this.description = description;
         this.location = location;
+        this.coverImage = coverImage;
         this.images = images;
         this.createdBy = createdBy;
     }

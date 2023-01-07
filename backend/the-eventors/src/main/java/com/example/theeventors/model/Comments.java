@@ -17,10 +17,10 @@ public class Comments {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @ManyToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     CommentAndReplies comment;
 
-    @ManyToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     List<CommentAndReplies> replies;
 
     public Comments(CommentAndReplies comment) {

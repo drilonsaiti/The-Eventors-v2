@@ -1,26 +1,38 @@
 package com.example.theeventors.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
-@NoArgsConstructor
 public class Guest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    String username;
-    String name;
-    String surname;
 
-    public Guest(String username, String name, String surname) {
-        this.username = username;
-        this.name = name;
-        this.surname = surname;
+    @ElementCollection
+    List<String> withUsername;
+
+    @ElementCollection
+    List<String> withNameAndSurname;
+
+    public Guest() {
+        this.withUsername = new ArrayList<>();
+        this.withNameAndSurname = new ArrayList<>();
+    }
+
+    public String getGuests(){
+        StringBuilder sb = new StringBuilder();
+        for (String s : this.withUsername){
+            sb.append(s).append(",");
+        }
+        for (String s : this.withNameAndSurname){
+            sb.append(s).append(",");
+        }
+        return sb.delete(sb.length()-1,sb.length()).toString();
     }
 }

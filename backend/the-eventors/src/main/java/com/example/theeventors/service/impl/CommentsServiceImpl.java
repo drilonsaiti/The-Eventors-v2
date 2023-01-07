@@ -2,11 +2,14 @@ package com.example.theeventors.service.impl;
 
 import com.example.theeventors.model.CommentAndReplies;
 import com.example.theeventors.model.Comments;
+import com.example.theeventors.model.exceptions.CommentNotFoundException;
 import com.example.theeventors.repository.CommentsRepository;
 import com.example.theeventors.service.CommentsService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class CommentsServiceImpl implements CommentsService {
 
 
@@ -23,7 +26,7 @@ public class CommentsServiceImpl implements CommentsService {
 
     @Override
     public Comments findById(Long id) {
-        return this.commentsRepository.findById(id).orElseThrow();
+        return this.commentsRepository.findById(id).orElseThrow(() -> new CommentNotFoundException(id));
     }
 
     @Override

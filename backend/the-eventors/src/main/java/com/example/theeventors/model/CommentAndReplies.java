@@ -1,9 +1,6 @@
 package com.example.theeventors.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,10 +18,12 @@ public class CommentAndReplies {
     LocalDateTime createdAt;
     String username;
 
+    Long idEvent;
 
-    public CommentAndReplies(String message, String username) {
+    public CommentAndReplies(String message, String username,Long idEvent) {
         this.message = message;
         this.username = username;
+        this.idEvent = idEvent;
         this.createdAt = LocalDateTime.now();
     }
 }

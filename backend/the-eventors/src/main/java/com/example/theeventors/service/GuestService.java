@@ -10,6 +10,8 @@ public interface GuestService {
 
     List<Guest> findAll();
     Guest findById(Long id);
-    Guest create(String username, String name, String surname);
+    Guest create(String guests);
+
+    Guest update(Long id,String guests);
     void delete(Long id);
 }

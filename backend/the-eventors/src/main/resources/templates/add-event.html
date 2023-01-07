@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<section class="about-banner relative" id="banners">
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="about-content col-lg-12">
+                <h1 class="text-white">
+                    Add new agency
+                </h1>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="container mb-4" xmlns:th="http://www.thymeleaf.org">
+    <div class="row">
+        <div class="col-md-5">
+
+            <form method="POST" th:action="${event == null} ?  '/events' : '/events/'+${event.getId()}" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="nameOfAgency">Title</label>
+                    <input type="text"
+                           class="form-control"
+                           id="nameOfAgency"
+                           name="title"
+                           th:value="${event?.getEventInfo()?.getTitle()}"
+                           required
+                           placeholder="Enter name of agency">
+                </div>
+
+                <div class="form-group">
+                    <label for="cityOfAgency">Description</label>
+                    <input type="text"
+                           class="form-control"
+                           id="cityOfAgency"
+                           name="description"
+                           th:value="${event?.getEventInfo()?.getDescription()}"
+                           required
+                           placeholder="Enter city">
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select name="category" class="form-control">
+                        <option th:if="${event} != null"
+                                th:each="cat : ${categories}"
+                                th:selected="${event.getCategory() != null &&
+                                event.getCategory().getId() == cat.getId()}"
+                                th:value="${cat.getId()}"
+                                th:text="${cat.getName()}">
+                        </option>
+                        <option th:if="${event} == null"
+                                th:each="cat : ${categories}"
+                                th:value="${cat.getId()}"
+                                th:text="${cat.getName()}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="location">location</label>
+                    <input type="text"
+                           class="form-control"
+                           id="location"
+                           name="location"
+                           th:value="${event?.getEventInfo()?.getLocation()}"
+                           required
+                           placeholder="Enter city">
+                </div>
+                <div class="form-group">
+                    <label for="images">Cover images</label>
+                    <input type="file"  accept="image/png, image/jpeg"
+                           class="form-control"
+                           id="coverImage"
+                           name="coverImage"
+                           th:value="${event?.getEventInfo()?.getCoverImage().getImageBase64()}"
+                           required
+                           placeholder="Enter city">
+                </div>
+                <div class="form-group">
+                    <label for="images">images</label>
+                    <input type="file" multiple accept="image/png, image/jpeg"
+                           class="form-control"
+                           id="images"
+                           name="images"
+                           th:value="${event?.getEventInfo()?.getImages()}"
+                           required
+                           placeholder="Enter city">
+                    <div th:if="${event?.getEventInfo()?.getImages()?.size() >= 0}" th:each="imgs : ${event?.getEventInfo()?.getImages()}">
+                        <img th:src="${imgs.getImageBase64()}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="guests">guests</label>
+                    <input type="text"
+                           class="form-control"
+                           id="guests"
+                           name="guests"
+                           th:value="${event?.getGuests()?.getGuests()}"
+                           required
+                           placeholder="Enter city">
+                </div>
+                <div class="form-group">
+                    <label for="cityOfAgency">startDateTime</label>
+                    <input type="datetime-local"
+                           class="form-control"
+                           id="startDateTime"
+                           name="startDateTime"
+                           th:value="${event?.getEventTimes()?.getStartTime()}"
+                           required
+                           placeholder="Enter city">
+                </div>
+                <div class="form-group">
+                    <label for="duration">duration</label>
+                    <input type="text"
+                           class="form-control"
+                           id="duration"
+                           name="duration"
+                           th:value="${event?.getEventTimes()?.getDuration()}"
+                           required
+                           placeholder="Enter city">
+                </div>
+
+
+                <button id="submit-from-add-balloon" type="submit" class="btn btn-primary">Submit</button>
+                <a type="button" class="btn btn-primary" href="/events">Back</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

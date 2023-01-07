@@ -10,6 +10,8 @@ public interface EventTimesService {
 
     List<EventTimes> findAll();
     EventTimes findById(Long id);
-    EventTimes create(LocalDateTime startTime, int duration);
+    EventTimes create(LocalDateTime startTime, String duration);
+
+    EventTimes update(Long id,LocalDateTime startTime,String duration);
     void delete(Long id);
 }
