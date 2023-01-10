@@ -1,3 +1,4 @@
+/*
 package com.example.theeventors.web.controller;
 
 import com.example.theeventors.model.User;
@@ -54,7 +55,8 @@ public class ProfileController {
         this.service.unFollowingUser(usernameFollowing,username);
         return "redirect:/profile";
     }
-   /* @GetMapping("/profile/settings")
+   */
+/* @GetMapping("/profile/settings")
     public String getSettings(HttpServletRequest req,Model model){
         String username = req.getRemoteUser();
 
@@ -84,5 +86,7 @@ public class ProfileController {
     public String delete(@PathVariable String username){
         this.userService.delete(username);
         return "redirect:/home";
-    }*/
+    }*//*
+
 }
+*/

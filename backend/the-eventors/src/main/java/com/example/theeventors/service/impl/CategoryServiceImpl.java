@@ -41,7 +41,9 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void delete(Long id) {
+    public Boolean delete(Long id) {
+
         this.categoryRepository.deleteById(id);
+        return true;
     }
 }

@@ -1,3 +1,4 @@
+/*
 package com.example.theeventors.web.controller;
 
 
@@ -60,3 +61,4 @@ public class CategoryController {
     }
 
 }
+*/

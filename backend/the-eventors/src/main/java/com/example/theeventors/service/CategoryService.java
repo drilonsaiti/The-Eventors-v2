@@ -13,5 +13,5 @@ public interface CategoryService {
     Category create(String name, String description);
 
     Category update(Long id,String name, String description);
-    void delete(Long id);
+    Boolean delete(Long id);
 }
