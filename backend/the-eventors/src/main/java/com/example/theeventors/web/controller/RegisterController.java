@@ -1,3 +1,4 @@
+/*
 package com.example.theeventors.web.controller;
 
 import com.example.theeventors.model.enumerations.Role;
@@ -54,3 +55,4 @@ public class RegisterController {
 }
 
 
+*/

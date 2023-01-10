@@ -71,10 +71,6 @@ public class EventInfoServiceImpl implements EventInfoService {
         eventInfo.setLocation(location);
         eventInfo.setCoverImage(cImage);
 
-        for (Image i : eventInfo.getImages()){
-            this.imageRepository.deleteById(i.getId());
-        }
-
         eventInfo.getImages().clear();
         List<Image> imgs= new ArrayList<>();
         for (MultipartFile file : images) {
@@ -84,7 +80,7 @@ public class EventInfoServiceImpl implements EventInfoService {
                     .imageBase64(String.format("data:%s;base64,%s", file.getContentType(),
                             Base64.getEncoder().encodeToString(file.getBytes()))).build()));
         }
-        eventInfo.setImages(imgs);
+        eventInfo.getImages().addAll(imgs);
         eventInfo.setCreatedBy(createdBy);
         return this.eventInfoRepository.save(eventInfo);
     }

@@ -29,26 +29,33 @@ public class ProfileRestController {
     }
 
     @GetMapping("/{username}")
-    public ResponseEntity<Boolean> getProfileUser(@PathVariable String username, HttpServletRequest req, Model model ){
+    public ResponseEntity<User> getProfileUser(@PathVariable String username, HttpServletRequest req ){
         User user = this.userService.findByUsername(username);
         User following = this.userService.findByUsername(req.getRemoteUser());
         boolean isFollowing = following.getFollowing().stream().anyMatch(f -> f.equals(username));
-        System.out.println(isFollowing);
-        model.addAttribute("user",user);
-        model.addAttribute("isFollowing",isFollowing);
-        return "profile";
+        return ResponseEntity.ok(user);
     }
 
+    @GetMapping("/{username}/isFollowing")
+    public ResponseEntity<Boolean> isFollowing(@PathVariable String username, HttpServletRequest req ){
+        User user = this.userService.findByUsername(username);
+        User following = this.userService.findByUsername(req.getRemoteUser());
+        boolean isFollowing = following.getFollowing().stream().anyMatch(f -> f.equals(username));
+        return ResponseEntity.ok(isFollowing);
+    }
+
+
+
     @PostMapping("/follow/{username}")
-    public String makeFollow(@PathVariable String username, HttpServletRequest req, Model model ){
+    public ResponseEntity.BodyBuilder makeFollow(@PathVariable String username, HttpServletRequest req, Model model ){
         String usernameFollowing = req.getRemoteUser();
         this.service.followingUser(usernameFollowing,username);
-        return "redirect:/profile";
+        return ResponseEntity.ok();
     }
     @PostMapping("/unfollow/{username}")
-    public String makeUnfollow(@PathVariable String username, HttpServletRequest req, Model model ){
+    public ResponseEntity.BodyBuilder makeUnfollow(@PathVariable String username, HttpServletRequest req, Model model ){
         String usernameFollowing = req.getRemoteUser();
         this.service.unFollowingUser(usernameFollowing,username);
-        return "redirect:/profile";
+        return ResponseEntity.ok();
     }
 }
