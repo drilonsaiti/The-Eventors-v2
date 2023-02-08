@@ -1,0 +1,81 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:the_eventors/ui/widgets/signup_button.dart';
+import '../ui/widgets/login.dart';
+
+import '../models/User.dart';
+import '../services/UserService.dart';
+
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
+
+  @override
+  State<LoginScreen> createState() => LoginScreenState();
+}
+
+class LoginScreenState extends State<LoginScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xff007CC7),
+      body: SingleChildScrollView(
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            height: MediaQuery.of(context).size.height * 0.6,
+            child: CustomPaint(
+              painter: CurvePainter(false),
+              child: Container(
+                  padding: const EdgeInsets.only(bottom: 0),
+                  child: const Center(
+                    child: SingleChildScrollView(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 32,
+                          vertical: 16,
+                        ),
+                        child: Login()),
+                  )),
+            ),
+          ),
+          Container(
+            height: MediaQuery.of(context).size.height * 0.3,
+            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+            child: const SignupButton(),
+          ),
+        ],
+      )),
+    );
+  }
+}
+
+class CurvePainter extends CustomPainter {
+  bool outterCurve;
+
+  CurvePainter(this.outterCurve);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    var paint = Paint();
+    paint.color = const Color(0xFF12232E);
+    paint.style = PaintingStyle.fill;
+
+    Path path = Path();
+    path.moveTo(0, 0);
+    path.lineTo(0, size.height);
+    path.quadraticBezierTo(
+        size.width * 0.5,
+        outterCurve ? size.height + 100 : size.height - 50,
+        size.width,
+        size.height);
+    path.lineTo(size.width, 0);
+    path.close();
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
+}
