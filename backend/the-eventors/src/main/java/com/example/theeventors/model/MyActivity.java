@@ -25,12 +25,12 @@ public class MyActivity {
     Map<Long, LocalDateTime> myInterestedEvent;
 
     @ElementCollection
-    List<Long> myComments;
+    Map<Long,Long> myComments;
 
     public MyActivity(String username) {
         this.username = username;
         this.myGoingEvent = new HashMap<>();
         this.myInterestedEvent = new HashMap<>();
-        this.myComments = new ArrayList<>();
+        this.myComments = new HashMap<>();
     }
 }

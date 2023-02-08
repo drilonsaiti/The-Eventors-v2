@@ -1,6 +1,8 @@
 package com.example.theeventors.web.rest;
 
 import com.example.theeventors.model.*;
+import com.example.theeventors.model.dto.EventDtoRequest;
+import com.example.theeventors.model.dto.EventsDto;
 import com.example.theeventors.model.enumerations.ReportType;
 import com.example.theeventors.repository.EventRepository;
 import com.example.theeventors.service.*;
@@ -17,7 +19,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/events")
+@RequestMapping("/api/events")
 public class EventRestController {
     private final EventService eventService;
     private final EventInfoService eventInfoService;
@@ -38,7 +40,7 @@ public class EventRestController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Event>> getEvents(){
+    public ResponseEntity<List<EventsDto>> getEvents(){
         return ResponseEntity.ok(this.eventService.findAll());
     }
     @GetMapping("/{id}/edit")
@@ -56,15 +58,12 @@ public class EventRestController {
 
 
     @PostMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity.BodyBuilder create(@RequestParam String title, @RequestParam String description, @RequestParam String location,
-                                             @RequestParam MultipartFile coverImage, @RequestParam MultipartFile [] images,
-                                             @RequestParam String guests, @RequestParam LocalDateTime startDateTime,
-                                             @RequestParam String duration, @RequestParam Long category, HttpServletRequest req) throws IOException {
-        this.eventService.create(category,this.eventInfoService.create(title,description,location,coverImage,images,req.getRemoteUser())
-                ,this.eventTimesService.create(startDateTime,duration)
-                ,this.guestService.create(guests), this.activityService.create());
-        return ResponseEntity.ok();
+    public ResponseEntity<Event> create(@ModelAttribute EventDtoRequest eventDtoRequest, HttpServletRequest req) throws IOException {
+        System.out.println(req.getSession().getAttribute("username"));
+        System.out.println("GUEST " + eventDtoRequest.getGuests());
+       Event e = this.eventService.create(eventDtoRequest, (String) req.getSession().getAttribute("username")
+                , this.activityService.create());
+        return ResponseEntity.ok(e);
     }
 
     @PostMapping("/{id}")

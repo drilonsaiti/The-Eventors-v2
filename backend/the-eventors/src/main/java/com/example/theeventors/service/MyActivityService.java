@@ -1,10 +1,12 @@
 package com.example.theeventors.service;
 
 
+import com.example.theeventors.model.CommentAndReplies;
 import com.example.theeventors.model.MyActivity;
 import com.example.theeventors.model.dto.MyCommentDto;
 
 import java.util.List;
+import java.util.Map;
 
 public interface MyActivityService {
     List<MyActivity> findAll();
@@ -15,5 +17,5 @@ public interface MyActivityService {
 
     MyActivity findOrCreate(String username);
     void delete(Long id);
-    List<MyCommentDto> createAcivityForComments(List<Long> comments);
+    List<MyCommentDto> createAcivityForComments(Map<Long,Long> comments);
 }

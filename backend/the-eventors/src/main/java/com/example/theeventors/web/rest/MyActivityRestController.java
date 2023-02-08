@@ -1,3 +1,4 @@
+/*
 package com.example.theeventors.web.rest;
 
 import com.example.theeventors.model.Event;
@@ -43,3 +44,4 @@ public class MyActivityRestController {
         return ResponseEntity.ok(new MyActivityDto(going,interested,comment));
     }
 }
+*/

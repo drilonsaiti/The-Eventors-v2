@@ -1,8 +1,11 @@
 package com.example.theeventors.service;
 
 import com.example.theeventors.model.User;
+import com.example.theeventors.model.dto.UserUsernameDto;
 import com.example.theeventors.model.enumerations.Role;
 import org.springframework.security.core.userdetails.UserDetailsService;
+
+import java.util.List;
 
 public interface UserService extends UserDetailsService {
 
@@ -10,6 +13,8 @@ public interface UserService extends UserDetailsService {
 
     void followingUser(String usernameFollowing,String usernameFollow);
     void unFollowingUser(String usernameFollowing,String usernameFollow);
+
+    List<UserUsernameDto> findAll();
 
 }
 

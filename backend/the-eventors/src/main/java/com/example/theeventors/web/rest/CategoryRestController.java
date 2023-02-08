@@ -1,27 +1,25 @@
 package com.example.theeventors.web.rest;
 
 import com.example.theeventors.model.Category;
-import com.example.theeventors.model.enumerations.Role;
-import com.example.theeventors.model.exceptions.InvalidArgumentsException;
-import com.example.theeventors.model.exceptions.PasswordsDoNotMatchException;
 import com.example.theeventors.service.CategoryService;
-import com.example.theeventors.service.MyActivityService;
 import com.example.theeventors.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/categories")
+@RequestMapping("/api/categories")
 public class CategoryRestController {
 
     private final CategoryService categoryService;
 
-    public CategoryRestController(CategoryService categoryService) {
+    private final UserService userService;
+
+    public CategoryRestController(CategoryService categoryService, UserService userService) {
         this.categoryService = categoryService;
+        this.userService = userService;
     }
 
     @GetMapping

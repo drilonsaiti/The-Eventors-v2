@@ -1,17 +1,28 @@
 package com.example.theeventors.service.impl;
 
 import com.example.theeventors.model.*;
+import com.example.theeventors.model.dto.EventDtoRequest;
+import com.example.theeventors.model.dto.EventsDto;
 import com.example.theeventors.model.exceptions.ActivityNotFoundException;
 import com.example.theeventors.model.exceptions.CategoryNotFoundException;
 import com.example.theeventors.model.exceptions.EventNotFoundException;
+import com.example.theeventors.model.mapper.EventsDtoMapper;
 import com.example.theeventors.repository.*;
+import com.example.theeventors.service.EventInfoService;
 import com.example.theeventors.service.EventService;
+import com.example.theeventors.service.EventTimesService;
+import com.example.theeventors.service.GuestService;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
@@ -20,24 +31,23 @@ public class EventServiceImpl implements EventService {
     private final CommentAndRepliesRepository commentAndRepliesRepository;
     private final MyActivityRepository myActivityRepository;
     private final CategoryRepository categoryRepository;
+    private final BookmarkRepository bookmarkRepository;
+    private final AfterDeleteOfEventRemoveFromActivityImpl deleteActivity;
 
-    public EventServiceImpl(EventRepository eventRepository,
-                            ActivityRepository activityRepository,
-                            CommentsRepository commentsRepository,
-                            CommentAndRepliesRepository commentAndRepliesRepository, MyActivityRepository myActivityRepository, CategoryRepository categoryRepository) {
-        this.eventRepository = eventRepository;
-        this.activityRepository = activityRepository;
-        this.commentsRepository = commentsRepository;
-        this.commentAndRepliesRepository = commentAndRepliesRepository;
+    private final EventInfoService eventInfoService;
 
-        this.myActivityRepository = myActivityRepository;
-        this.categoryRepository = categoryRepository;
-    }
+    private final EventTimesService eventTimeService;
+    private final EventsDtoMapper eventsDtoMapper;
+
+    private final GuestService guestService;
+
 
 
     @Override
-    public List<Event> findAll() {
-        return this.eventRepository.findAll();
+    public List<EventsDto> findAll() {
+        return this.eventRepository.findAll()
+                .stream()
+                .map(eventsDtoMapper).collect(Collectors.toList());
     }
 
     @Override
@@ -46,8 +56,12 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Event create(Long categoryId,EventInfo eventInfo, EventTimes eventTimes, Guest guests, Activity activity) {
-        Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
+    public Event create(EventDtoRequest e,String username, Activity activity) throws IOException {
+        Category category = this.categoryRepository.findById(Long.valueOf(e.getCategory())).orElseThrow(() -> new CategoryNotFoundException(Long.valueOf(e.getCategory())));
+        EventInfo eventInfo = this.eventInfoService.create(e.getTitle(),e.getDescription(),e.getLocation(),e.getCoverImage(),e.getImages(),username);
+        System.out.println(e.getStartTime());
+        EventTimes eventTimes = this.eventTimeService.create(LocalDateTime.now(),e.getDuration());
+        Guest guests = this.guestService.create(e.getGuests());
         return this.eventRepository.save(new Event(category,eventInfo,eventTimes,guests, activity));
     }
 
@@ -85,7 +99,7 @@ public class EventServiceImpl implements EventService {
         this.commentsRepository.save(comments);
         event.getComments().add(comments);
         this.eventRepository.save(event);
-        myActivity.getMyComments().add(commentAndReplies.getId());
+        myActivity.getMyComments().put(commentAndReplies.getId(),id);
         this.myActivityRepository.save(myActivity);
     }
 
@@ -99,7 +113,7 @@ public class EventServiceImpl implements EventService {
         comments.getReplies().add(commentAndReplies);
         this.commentsRepository.save(comments);
 
-        myActivity.getMyComments().add(commentAndReplies.getId());
+        myActivity.getMyComments().put(commentAndReplies.getId(),id);
         this.myActivityRepository.save(myActivity);
     }
 
@@ -115,19 +129,15 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
-        List<MyActivity> activities = this.myActivityRepository.findAll();
-        List<MyActivity> activity = activities.stream().filter(u -> u.getMyGoingEvent().keySet().stream().anyMatch(b -> b == id) ||
-                u.getMyInterestedEvent().keySet().stream().anyMatch(b -> b == id)).toList();
-        for (MyActivity ac :  activity){
-            if (ac.getMyInterestedEvent().keySet().stream().anyMatch(a -> a == id)){
-                ac.getMyInterestedEvent().remove(id);
-                this.myActivityRepository.save(ac);
-            }else{
-                ac.getMyGoingEvent().remove(id);
-                this.myActivityRepository.save(ac);
-            }
+        this.deleteActivity.delete(id);
+        Event event = this.findById(id);
+        for (Bookmark b : this.bookmarkRepository.findAllByEvents(event)){
+            b.getEvents().remove(event);
+            this.bookmarkRepository.save(b);
         }
+
         this.eventRepository.deleteById(id);
 
     }

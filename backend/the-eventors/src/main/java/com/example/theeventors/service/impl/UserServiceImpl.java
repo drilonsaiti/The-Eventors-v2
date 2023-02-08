@@ -1,32 +1,32 @@
 package com.example.theeventors.service.impl;
 
-import com.example.theeventors.model.Event;
 import com.example.theeventors.model.User;
+import com.example.theeventors.model.dto.UserUsernameDto;
 import com.example.theeventors.model.enumerations.Role;
 import com.example.theeventors.model.exceptions.InvalidUsernameOrPasswordException;
 import com.example.theeventors.model.exceptions.PasswordsDoNotMatchException;
 import com.example.theeventors.model.exceptions.UsernameAlreadyExistsException;
+import com.example.theeventors.model.mapper.UserUsernameMapper;
 import com.example.theeventors.repository.EventRepository;
 import com.example.theeventors.repository.UserRepository;
 import com.example.theeventors.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    private final EventRepository eventRepository;
-
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, EventRepository eventRepository) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.eventRepository = eventRepository;
-    }
+   private final UserUsernameMapper mapper;
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
@@ -55,6 +55,13 @@ public class UserServiceImpl implements UserService {
         this.userRepository.save(user);
         this.userRepository.save(userFollow);
 
+    }
+
+    @Override
+    public List<UserUsernameDto> findAll() {
+        return this.userRepository.findAll()
+                .stream()
+                .map(mapper).collect(Collectors.toList());
     }
 
 

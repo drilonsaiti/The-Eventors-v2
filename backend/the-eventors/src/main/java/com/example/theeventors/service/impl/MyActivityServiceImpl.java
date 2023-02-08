@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MyActivityServiceImpl implements MyActivityService {
@@ -64,11 +65,11 @@ public class MyActivityServiceImpl implements MyActivityService {
     }
 
     @Override
-    public List<MyCommentDto> createAcivityForComments(List<Long> comments) {
+    public List<MyCommentDto> createAcivityForComments(Map<Long,Long> comments) {
         List<MyCommentDto> list = new ArrayList<>();
         if (comments.size() != 0) {
-            for (Long l : comments) {
-                CommentAndReplies c = this.commRepository.findById(l).orElseThrow(() -> new CommentNotFoundException(l));
+            for (Map.Entry<Long, Long> s : comments.entrySet()) {
+                CommentAndReplies c = this.commRepository.findById(s.getKey()).orElseThrow(() -> new CommentNotFoundException(s.getKey()));
                 Event event = this.eventRepository.findById(c.getIdEvent()).orElseThrow(() -> new EventNotFoundException(c.getIdEvent()));
                 list.add(new MyCommentDto(c.getMessage(), c.getCreatedAt(), c.getUsername(), c.getIdEvent(), event.getEventInfo().getCreatedBy(), event.getEventInfo().getTitle(), event.getEventTimes().getCreatedTime()));
             }

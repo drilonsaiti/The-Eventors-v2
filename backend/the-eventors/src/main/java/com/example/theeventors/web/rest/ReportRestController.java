@@ -1,3 +1,4 @@
+/*
 package com.example.theeventors.web.rest;
 
 import com.example.theeventors.model.Report;
@@ -38,3 +39,4 @@ public class ReportRestController {
         return ResponseEntity.ok(this.reportService.create(req.getRemoteUser(),id,type));
     }
 }
+*/

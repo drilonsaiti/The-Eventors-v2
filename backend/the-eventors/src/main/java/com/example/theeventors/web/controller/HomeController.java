@@ -1,4 +1,3 @@
-/*
 package com.example.theeventors.web.controller;
 
 import com.example.theeventors.service.HomeService;
@@ -22,4 +21,3 @@ public class HomeController {
         return "home";
     }
 }
-*/

@@ -1,3 +1,4 @@
+/*
 package com.example.theeventors.web.rest;
 
 import com.example.theeventors.model.User;
@@ -59,3 +60,4 @@ public class ProfileRestController {
         return ResponseEntity.ok();
     }
 }
+*/

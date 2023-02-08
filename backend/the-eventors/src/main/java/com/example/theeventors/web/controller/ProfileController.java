@@ -1,4 +1,3 @@
-/*
 package com.example.theeventors.web.controller;
 
 import com.example.theeventors.model.User;
@@ -10,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.Optional;
 
 @Controller
 public class ProfileController {
@@ -55,12 +56,11 @@ public class ProfileController {
         this.service.unFollowingUser(usernameFollowing,username);
         return "redirect:/profile";
     }
-   */
-/* @GetMapping("/profile/settings")
+ /*@GetMapping("/profile/settings")
     public String getSettings(HttpServletRequest req,Model model){
         String username = req.getRemoteUser();
 
-        Optional<User> user = this.userService.findByUsername(username);
+        User user = this.userService.findByUsername(username);
 
         model.addAttribute("user",user);
 
@@ -86,7 +86,6 @@ public class ProfileController {
     public String delete(@PathVariable String username){
         this.userService.delete(username);
         return "redirect:/home";
-    }*//*
+    }*/
 
 }
-*/

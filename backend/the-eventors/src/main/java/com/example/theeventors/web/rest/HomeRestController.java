@@ -1,3 +1,4 @@
+/*
 package com.example.theeventors.web.rest;
 
 import com.example.theeventors.model.Category;
@@ -29,3 +30,4 @@ public class HomeRestController {
         return ResponseEntity.ok(this.homeService.findAll(req.getRemoteUser()));
     }
 }
+*/

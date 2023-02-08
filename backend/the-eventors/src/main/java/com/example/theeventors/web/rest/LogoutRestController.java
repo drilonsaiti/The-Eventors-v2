@@ -1,3 +1,4 @@
+/*
 package com.example.theeventors.web.rest;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,3 +19,4 @@ public class LogoutRestController {
          return ResponseEntity.ok();
     }
 }
+*/

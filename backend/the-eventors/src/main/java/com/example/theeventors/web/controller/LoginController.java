@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
-@RequestMapping("/login")
+@RequestMapping("/logined")
 public class LoginController {
 
     private final AuthService authService;
@@ -35,6 +35,7 @@ public class LoginController {
             user = this.authService.login(request.getParameter("username"),
                     request.getParameter("password"));
             request.getSession().setAttribute("user", user);
+            System.out.println(user);
             return "redirect:/home";
         }
         catch (InvalidUserCredentialsException exception) {

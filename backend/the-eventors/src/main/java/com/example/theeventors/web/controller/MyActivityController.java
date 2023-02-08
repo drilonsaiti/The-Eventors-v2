@@ -1,4 +1,3 @@
-/*
 package com.example.theeventors.web.controller;
 
 
@@ -18,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@PreAuthorize("hasRole('ROLE_USER')")
 public class MyActivityController {
     private  final MyActivityService myActivityService;
 
@@ -36,14 +34,15 @@ public class MyActivityController {
         MyActivity activity = this.myActivityService.findByUsername(req.getRemoteUser());
         List<Event> going = new ArrayList<>();
         List<Event> interested = new ArrayList<>();
+        System.out.println("ACTIVITY : " + activity);
         activity.getMyGoingEvent().keySet().forEach(f -> going.add(this.eventService.findById(f)));
+        model.addAttribute("going",going);
         activity.getMyInterestedEvent().keySet().forEach(f -> interested.add(this.eventService.findById(f)));
         List<MyCommentDto> comment = this.myActivityService.createAcivityForComments(activity.getMyComments());
-        model.addAttribute("going",going);
+
         model.addAttribute("interested",interested);
         model.addAttribute("comments",comment);
 
         return "my-activity";
     }
 }
-*/

@@ -1,4 +1,3 @@
-/*
 package com.example.theeventors.web.controller;
 
 
@@ -45,4 +44,3 @@ public class ReportController {
         return "redirect:/events/"+id+"/details";
     }
 }
-*/

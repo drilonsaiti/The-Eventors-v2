@@ -38,10 +38,11 @@ th:action="@{'/upload/image'}">
                 <td th:text="${event.getName()}"></td>
                 <td th:text="${event.getType()}"></td>
                 <td> <img th:src="${event.getImageBase64()}" style="width: 100px;height: 100px" alt=""></td>
-
+                <td th:text="${event.getImageBase64()}"></td>
             </tr>
             </tbody>
         </table>
+        <p> test</p>
     </div>
 </div>
 

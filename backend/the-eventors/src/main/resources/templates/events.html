@@ -64,6 +64,14 @@
                                         class="fa fa-trash">Delete</i>
                                 </button>
                             </form>
+                            <form th:action="@{'/bookmark/add-event/{id}' (id=${event.getId()})}"
+                                  th:method="POST"
+                                  sec:authorize="isAuthenticated()">
+                                <button type="submit"
+                                        class="btn btn-sm btn-primary cart-product">
+                                    <i class="fa fa-trash">Bookmark</i>
+                                </button>
+                            </form>
 
 
                             <a th:href="@{'/events/{id}/edit' (id=${event.getId()})}"

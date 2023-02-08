@@ -1,4 +1,3 @@
-/*
 package com.example.theeventors.web.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,4 +16,3 @@ public class LogoutController {
         return "redirect:/login";
     }
 }
-*/

@@ -18,15 +18,6 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public User login(String username, String password) {
-        if (username==null || username.isEmpty() || password==null || password.isEmpty()) {
-            throw new InvalidArgumentsException();
-        }
-        return userRepository.findByUsernameAndPassword(username,
-                password).orElseThrow(InvalidUserCredentialsException::new);
-    }
-
-    @Override
     public User findByUsername(String username) {
         return this.userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("Username with %s doesn't exists",username)));
     }

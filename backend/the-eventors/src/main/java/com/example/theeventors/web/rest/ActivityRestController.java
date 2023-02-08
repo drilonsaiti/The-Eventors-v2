@@ -1,3 +1,4 @@
+/*
 package com.example.theeventors.web.rest;
 
 import com.example.theeventors.model.CommentAndReplies;
@@ -51,3 +52,4 @@ public class ActivityRestController {
 
     }
 }
+*/

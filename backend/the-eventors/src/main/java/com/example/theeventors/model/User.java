@@ -3,6 +3,7 @@ package com.example.theeventors.model;
 
 import com.example.theeventors.model.enumerations.Role;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +17,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "eventors_users")
+
 public class User implements UserDetails {
 
     @Id
@@ -32,6 +34,8 @@ public class User implements UserDetails {
     @ElementCollection
     List<String> followers;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER,orphanRemoval = true)
+    private List<Bookmark> bookmarks;
 
 
     private boolean isAccountNonExpired = true;

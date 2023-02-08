@@ -1,15 +1,18 @@
 package com.example.theeventors.service;
 
 import com.example.theeventors.model.*;
+import com.example.theeventors.model.dto.EventDtoRequest;
+import com.example.theeventors.model.dto.EventsDto;
 
 
+import java.io.IOException;
 import java.util.List;
 
 public interface EventService {
 
-    List<Event> findAll();
+    List<EventsDto> findAll();
     Event findById(Long id);
-    Event create(Long category,EventInfo eventInfo, EventTimes eventTimes, Guest guests, Activity activity);
+    Event create(EventDtoRequest eventDtoRequest,String username, Activity activity) throws IOException;
 
     Event update(Long id,Long idCategory,EventInfo eventInfo, EventTimes eventTimes,Guest guests);
     void delete(Long id);

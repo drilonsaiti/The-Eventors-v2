@@ -15,9 +15,5 @@ public class TheEventorsApplication {
         SpringApplication.run(TheEventorsApplication.class, args);
     }
 
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(10);
-    }
 
 }
