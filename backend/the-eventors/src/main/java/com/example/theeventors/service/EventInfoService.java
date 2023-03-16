@@ -12,8 +12,8 @@ import java.util.List;
 public interface EventInfoService {
     List<EventInfo> findAll();
     EventInfo findById(Long id);
-    EventInfo create(String title, String description, String location, MultipartFile coverImage, MultipartFile [] images, String createdBy) throws IOException;
+    EventInfo create(String title, String description , MultipartFile coverImage, MultipartFile [] images, String createdBy) throws IOException;
 
-    EventInfo update(Long id, String title, String description, String location, MultipartFile coverImage, MultipartFile [] images, String createdBy) throws IOException;
+    EventInfo update(Long id, String title, String description  , MultipartFile coverImage, MultipartFile [] images, String createdBy) throws IOException;
     void delete(Long id);
 }

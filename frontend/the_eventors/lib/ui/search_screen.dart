@@ -1,7 +1,19 @@
+import 'dart:convert';
+import 'package:badges/badges.dart' as badges;
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 import 'package:the_eventors/providers/EventProvider.dart';
 import 'package:the_eventors/providers/UserProvider.dart';
+import 'package:the_eventors/ui/detail_event_screen.dart';
+import 'package:the_eventors/ui/profile_screen.dart';
+import '../repository/MyActivityRepository.dart';
+
+import 'all_near_events_map_screen.dart';
+import 'home_screen.dart';
+import 'notifications_list_screen.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -32,11 +44,96 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool notifications = false;
+    MyActivityRepository()
+        .checkNoReadNotifications()
+        .then((value) => notifications = value);
     return GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
         child: MaterialApp(
             debugShowCheckedModeBanner: false,
             home: Scaffold(
+              backgroundColor: Color(0xFF203647),
+              bottomNavigationBar: BottomAppBar(
+                  elevation: 4,
+                  color: Color(0xFF203647),
+                  child: Container(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          top: BorderSide(
+                            color: Color(0x4D007CC7),
+                            width: 1.5,
+                            style: BorderStyle.solid,
+                          ),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HomeScreen()));
+                            },
+                            icon: Icon(Icons.home_outlined),
+                            color: Color(0xFFEEFBFB),
+                          ),
+                          IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Ionicons.search),
+                              color: Color(0xFFEEFBFB)),
+                          IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        AllNearEventsMapScreen(),
+                                  ));
+                            },
+                            icon: Icon(Icons.map_outlined),
+                            color: Color(0xFFEEFBFB),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        NotificationListScreen(
+                                      key: UniqueKey(),
+                                    ),
+                                  ));
+                            },
+                            icon: Column(children: [
+                              if (!notifications)
+                                SizedBox(
+                                  height: 4,
+                                ),
+                              if (!notifications)
+                                const badges.Badge(
+                                  badgeContent: Text(''),
+                                  child: Icon(Icons.notifications_outlined),
+                                ),
+                              if (notifications) Icon(Icons.notifications)
+                            ]),
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ProfileScreen(
+                                        username: "",
+                                      ),
+                                    ));
+                              },
+                              icon: Icon(Icons.person_outline),
+                              color: Color(0xFFEEFBFB)),
+                        ],
+                      ))),
               resizeToAvoidBottomInset: false,
               body: Container(
                   padding: const EdgeInsets.only(bottom: 10),
@@ -73,12 +170,12 @@ class _SearchScreenState extends State<SearchScreen> {
                                                 const EdgeInsets.only(
                                                     top: 10, left: 10),
                                             filled: true,
-                                            fillColor: Colors.grey.shade200,
+                                            fillColor: Color(0xFFEEFBFB),
                                             hintText: "Search",
                                             border: OutlineInputBorder(
                                               borderSide: const BorderSide(
                                                 width: 10,
-                                                color: Colors.white,
+                                                color: Color(0xFFEEFBFB),
                                                 style: BorderStyle.none,
                                               ),
                                               borderRadius:
@@ -96,7 +193,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                     "Cancel",
                                     textDirection: TextDirection.ltr,
                                     textAlign: TextAlign.left,
-                                    style: TextStyle(fontSize: 20),
+                                    style: TextStyle(
+                                        fontSize: 20, color: Color(0xFFEEFBFB)),
                                   ),
                                   onTap: () {
                                     Navigator.pop(context);
@@ -116,16 +214,25 @@ class _SearchScreenState extends State<SearchScreen> {
                                     child: Column(
                                       children: [
                                         Material(
+                                          color: Color(0xFF203647),
                                           elevation: 0,
                                           child: TabBar(
                                             unselectedLabelColor:
-                                                Colors.blueAccent,
+                                                Color(0xFFEEFBFB),
                                             indicatorSize:
                                                 TabBarIndicatorSize.label,
                                             indicator: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(50),
-                                                color: Colors.blueAccent),
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                              gradient: LinearGradient(
+                                                begin: Alignment.topRight,
+                                                end: Alignment.bottomLeft,
+                                                colors: [
+                                                  Color(0xff4DA8DA),
+                                                  Color(0xff007CC7),
+                                                ],
+                                              ),
+                                            ),
                                             tabs: [
                                               Tab(
                                                   child: Container(
@@ -135,7 +242,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                             50),
                                                     border: Border.all(
                                                         color:
-                                                            Colors.blueAccent,
+                                                            Color(0xff007CC7),
                                                         width: 1)),
                                                 child: Align(
                                                   alignment: Alignment.center,
@@ -150,7 +257,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                             50),
                                                     border: Border.all(
                                                         color:
-                                                            Colors.blueAccent,
+                                                            Color(0xff007CC7),
                                                         width: 1)),
                                                 child: Align(
                                                   alignment: Alignment.center,
@@ -185,10 +292,24 @@ class _SearchScreenState extends State<SearchScreen> {
                                                       itemBuilder:
                                                           (context, index) {
                                                         return ListTile(
-                                                            title: Text(data
+                                                          onTap: () => Navigator
+                                                                  .of(context)
+                                                              .push(MaterialPageRoute(
+                                                                  builder: (context) =>
+                                                                      DetailsEventScreen(
+                                                                          id: data
+                                                                              .findEvents[index]
+                                                                              .id))),
+                                                          title: Text(
+                                                            data
                                                                 .findEvents[
                                                                     index]
-                                                                .title));
+                                                                .title,
+                                                            style: TextStyle(
+                                                                color: Color(
+                                                                    0xFFEEFBFB)),
+                                                          ),
+                                                        );
                                                       });
                                                 }),
                                                 Consumer<UserProvider>(builder:
@@ -205,10 +326,56 @@ class _SearchScreenState extends State<SearchScreen> {
                                                       itemBuilder:
                                                           (context, index) {
                                                         return ListTile(
-                                                            title: Text(data
-                                                                .findUsername[
-                                                                    index]
-                                                                .username));
+                                                            onTap: () => Navigator
+                                                                    .of(context)
+                                                                .push(MaterialPageRoute(
+                                                                    builder: (context) => ProfileScreen(
+                                                                        username: data
+                                                                            .findUsername[
+                                                                                index]
+                                                                            .username))),
+                                                            leading:
+                                                                CircleAvatar(
+                                                              child: ClipOval(
+                                                                  child: !data
+                                                                          .findUsername[
+                                                                              index]
+                                                                          .profileImage
+                                                                          .startsWith(
+                                                                              '/')
+                                                                      ? Image
+                                                                          .asset(
+                                                                          'assets/profile_image.png',
+                                                                          height:
+                                                                              50,
+                                                                          width:
+                                                                              50,
+                                                                          fit: BoxFit
+                                                                              .cover,
+                                                                        )
+                                                                      : Image
+                                                                          .memory(
+                                                                          base64Decode(
+                                                                            data.findUsername[index].profileImage,
+                                                                          ),
+                                                                          height:
+                                                                              50,
+                                                                          width:
+                                                                              50,
+                                                                          fit: BoxFit
+                                                                              .cover,
+                                                                        )),
+                                                            ),
+                                                            title: Text(
+                                                                data
+                                                                    .findUsername[
+                                                                        index]
+                                                                    .username,
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Color(
+                                                                      0xFFEEFBFB),
+                                                                )));
                                                       });
                                                 }),
                                               ],

@@ -34,25 +34,35 @@
 
       <form method="POST" th:action="${category == null} ?  '/categories' : '/categories/'+${category.getId()}">
         <div class="form-group">
-          <label for="nameOfAgency">Name of Agency </label>
+          <label for="nameOfAgency">Image url</label>
+          <input type="text"
+                 class="form-control"
+                 id="imageUrl"
+                 name="imageUrl"
+                 th:value="${category?.getImageUrl()()}"
+                 required
+                 placeholder="Enter image url">
+        </div>
+        <div class="form-group">
+          <label for="nameOfAgency">Name of Category </label>
           <input type="text"
                  class="form-control"
                  id="nameOfAgency"
                  name="name"
                  th:value="${category?.getName()}"
                  required
-                 placeholder="Enter name of agency">
+                 placeholder="Enter name of category">
         </div>
 
         <div class="form-group">
-          <label for="cityOfAgency">City of Agency</label>
+          <label for="cityOfAgency">Description</label>
           <input type="text"
                  class="form-control"
                  id="cityOfAgency"
                  name="description"
                  th:value="${category?.getDescription()}"
                  required
-                 placeholder="Enter city">
+                 placeholder="Enter description">
         </div>
 
 

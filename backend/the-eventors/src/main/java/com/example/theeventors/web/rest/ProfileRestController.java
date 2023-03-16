@@ -1,32 +1,38 @@
-/*
+
 package com.example.theeventors.web.rest;
 
+import com.example.theeventors.config.JwtService;
 import com.example.theeventors.model.User;
+import com.example.theeventors.model.dto.*;
+import com.example.theeventors.model.enumerations.NotificationTypes;
 import com.example.theeventors.service.AuthService;
+import com.example.theeventors.service.NotificationInfoService;
 import com.example.theeventors.service.UserService;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/profile")
+@RequestMapping("/api/profile")
+@AllArgsConstructor
 public class ProfileRestController {
 
     private final AuthService userService;
     private final UserService service;
 
-    public ProfileRestController(AuthService userService, UserService service) {
-        this.userService = userService;
-        this.service = service;
-    }
+    private final JwtService jwtService;
+    private final NotificationInfoService notificationInfoService;
+
+
 
     @GetMapping
-    public ResponseEntity<User> getProfile(HttpServletRequest req, Model model){
-       return ResponseEntity.ok(this.userService.findByUsername(req.getRemoteUser()));
-
-
+    public ResponseEntity<UserProfileDto> getProfile(@RequestParam String username) {
+        System.out.println(username);
+        return ResponseEntity.ok(this.service.findUserProfile(username));
     }
 
     @GetMapping("/{username}")
@@ -37,27 +43,31 @@ public class ProfileRestController {
         return ResponseEntity.ok(user);
     }
 
-    @GetMapping("/{username}/isFollowing")
-    public ResponseEntity<Boolean> isFollowing(@PathVariable String username, HttpServletRequest req ){
-        User user = this.userService.findByUsername(username);
-        User following = this.userService.findByUsername(req.getRemoteUser());
-        boolean isFollowing = following.getFollowing().stream().anyMatch(f -> f.equals(username));
-        return ResponseEntity.ok(isFollowing);
+    @PostMapping("/isFollowing")
+    public ResponseEntity<Boolean> isFollowing(@RequestBody CheckIsFollowingDto check, HttpServletRequest req ){
+        return ResponseEntity.ok(this.service.isFollowing(check.getToken(),check.getUsername()));
     }
 
 
 
-    @PostMapping("/follow/{username}")
-    public ResponseEntity.BodyBuilder makeFollow(@PathVariable String username, HttpServletRequest req, Model model ){
-        String usernameFollowing = req.getRemoteUser();
-        this.service.followingUser(usernameFollowing,username);
+    @PostMapping("/follow")
+    public ResponseEntity.BodyBuilder makeFollow(@RequestBody NotificationInfoDto dto) throws FirebaseMessagingException { //notification following
+        String usernameFollowing = jwtService.extractUsername(dto.getFrom());
+        this.notificationInfoService.createFollow(dto, NotificationTypes.FOLLOW);
+        this.service.followingUser(usernameFollowing,dto.getTo());
         return ResponseEntity.ok();
     }
-    @PostMapping("/unfollow/{username}")
-    public ResponseEntity.BodyBuilder makeUnfollow(@PathVariable String username, HttpServletRequest req, Model model ){
-        String usernameFollowing = req.getRemoteUser();
-        this.service.unFollowingUser(usernameFollowing,username);
+    @PostMapping("/unfollow")
+    public ResponseEntity.BodyBuilder makeUnfollow( @RequestBody FollowRequestDto dto){
+        String usernameFollowing = jwtService.extractUsername(dto.getToken());
+        this.service.unFollowingUser(usernameFollowing, dto.getUsername());
+        return ResponseEntity.ok();
+    }
+
+    @PostMapping("/edit")
+    public ResponseEntity.BodyBuilder editProfile( @RequestBody UpdateProfileDto dto){
+        this.service.updateProfile(dto);
         return ResponseEntity.ok();
     }
 }
-*/
+

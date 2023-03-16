@@ -1,11 +1,16 @@
-/*
+
 package com.example.theeventors.web.controller;
 
+import com.example.theeventors.config.auth.AuthenticationRequest;
+import com.example.theeventors.config.auth.AuthenticationResponse;
+import com.example.theeventors.config.auth.AuthenticationService;
 import com.example.theeventors.model.User;
 import com.example.theeventors.model.exceptions.InvalidUserCredentialsException;
 import com.example.theeventors.service.AuthService;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,13 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/logined")
+@AllArgsConstructor
 public class LoginController {
 
     private final AuthService authService;
-
-    public LoginController(AuthService authService) {
-        this.authService = authService;
-    }
+    private final AuthenticationService service;
 
     @GetMapping
     public String getLoginPage(Model model) {
@@ -30,15 +33,18 @@ public class LoginController {
 
     @PostMapping
     public String login(HttpServletRequest request, Model model) {
-        User user = null;
+        System.out.println(request.getParameter("username") + " " +
+                request.getParameter("password"));
+        request.getSession().setAttribute("username",request.getParameter("username"));
         try{
-            user = this.authService.login(request.getParameter("username"),
-                    request.getParameter("password"));
-            request.getSession().setAttribute("user", user);
-            System.out.println(user);
-            return "redirect:/home";
+
+           AuthenticationResponse user = this.service.authenticate(new AuthenticationRequest(request.getParameter("username"),
+                   request.getParameter("password")));
+            System.out.println(user.getToken());
+            request.getSession().setAttribute("user", user.getToken());
+            return "redirect:/dashboard";
         }
-        catch (InvalidUserCredentialsException exception) {
+        catch (InvalidUserCredentialsException | ServletException exception) {
             model.addAttribute("hasError", true);
             model.addAttribute("error", exception.getMessage());
             return "login";
@@ -46,4 +52,4 @@ public class LoginController {
     }
 }
 
-*/
+

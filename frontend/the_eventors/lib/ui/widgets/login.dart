@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:the_eventors/providers/UserProvider.dart';
-import 'package:the_eventors/ui/detail_event_screen.dart';
-import 'package:the_eventors/ui/details_event_screen.dart';
-import 'package:the_eventors/ui/search_events_screen.dart';
-
-import '../details.dart';
 import '../home_screen.dart';
 
 class Login extends StatefulWidget {
@@ -15,100 +12,163 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  bool _passwordVisible = false;
+
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  String error = "";
 
   @override
   Widget build(BuildContext context) {
+    print(MediaQuery.of(context).size.width.toString());
+    print(MediaQuery.of(context).size.width.toString());
+
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        const Text(
+        Container(
+            child: Text(
           "Welcome to",
           style: TextStyle(
-            fontSize: 30,
+            fontSize: 30.sp,
             color: Color(0xff4DA8DA),
-            height: 2,
+            height: 0.2.h,
           ),
-        ),
-        const Text(
+        )),
+        Container(
+            child: Text(
           "The eventors",
           style: TextStyle(
-              fontSize: 45,
+              fontSize: 45.sp,
               color: Color(0xff4DA8DA),
-              height: 1,
               fontWeight: FontWeight.bold,
-              letterSpacing: 2),
+              letterSpacing: 2,
+              height: 0.1.h),
+        )),
+        SizedBox(
+          height: 1.6.h,
         ),
-        const Text(
+        Text(
           "Please login to continue",
-          style: TextStyle(fontSize: 20, color: Color(0xff4DA8DA), height: 1),
+          style: TextStyle(
+              fontSize: 20.sp, color: Color(0xff4DA8DA), height: 0.1.h),
         ),
-        const SizedBox(
-          height: 16,
+        SizedBox(
+          height: 1.6.h,
         ),
-        TextFormField(
-          style: const TextStyle(color: Color(0xFF12232E)),
-          cursorColor: const Color(0xFF12232E),
-          controller: usernameController,
-          validator: (String? value) {
-            if (value!.isEmpty) {
-              return "Please enter your username";
-            }
-          },
-          decoration: InputDecoration(
-              hintText: "@username",
-              hintStyle: const TextStyle(
-                fontSize: 16,
-                color: Color(0x4012232E),
-                fontWeight: FontWeight.bold,
-              ),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25),
-                  borderSide:
-                      const BorderSide(width: 0, style: BorderStyle.none)),
-              filled: true,
-              fillColor: const Color(0xFFEEFBFB),
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 0)),
-        ),
-        const SizedBox(
-          height: 16,
-        ),
-        TextFormField(
-          style: const TextStyle(color: Color(0xFF12232E)),
-          cursorColor: const Color(0xFF12232E),
-          controller: passwordController,
-          validator: (String? value) {
-            if (value!.isEmpty) {
-              return "Please enter your username";
-            }
-          },
-          obscureText: true,
-          decoration: InputDecoration(
-              hintText: "Password",
-              hintStyle: const TextStyle(
-                fontSize: 16,
-                color: Color(0x4012232E),
-                fontWeight: FontWeight.bold,
-              ),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25),
-                  borderSide:
-                      const BorderSide(width: 0, style: BorderStyle.none)),
-              filled: true,
-              fillColor: const Color(0xFFEEFBFB),
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 0)),
-        ),
-        const SizedBox(
-          height: 24,
+        Form(
+            key: _formKey,
+            child: Column(
+                // mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  TextFormField(
+                    style: const TextStyle(color: Color(0xFF12232E)),
+                    cursorColor: const Color(0xFF12232E),
+                    controller: usernameController,
+                    validator: (String? value) {
+                      if (value!.isEmpty) {
+                        return "Please enter your username";
+                      }
+                    },
+                    decoration: InputDecoration(
+                        hintText: "@username",
+                        suffixIcon: Icon(Icons.show_chart),
+                        hintStyle: TextStyle(
+                          fontSize: 16.sp,
+                          color: Color(0x4012232E),
+                          fontWeight: FontWeight.bold,
+                        ),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(25),
+                            borderSide: const BorderSide(
+                                width: 0, style: BorderStyle.none)),
+                        filled: true,
+                        fillColor: const Color(0xFFEEFBFB),
+                        errorStyle: TextStyle(fontSize: 16.sp),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 0)),
+                  ),
+                  if (error != null)
+                    if (error.startsWith("User"))
+                      Container(
+                          padding: EdgeInsets.only(top: 5, bottom: 5),
+                          margin: EdgeInsets.only(
+                              right:
+                                  (MediaQuery.of(context).size.width * 0.3).w),
+                          child: Text(
+                            error,
+                            style: TextStyle(
+                                color: Colors.red, fontWeight: FontWeight.w400),
+                          )),
+                  SizedBox(
+                    height: 1.6.h,
+                  ),
+                  TextFormField(
+                    style: const TextStyle(color: Color(0xFF12232E)),
+                    cursorColor: const Color(0xFF12232E),
+                    controller: passwordController,
+                    validator: (String? value) {
+                      if (value!.isEmpty) {
+                        return "Please enter your password";
+                      } else if (value.isNotEmpty && value.length < 8) {
+                        return "Please enter password with length\nof 8 characters";
+                      }
+                    },
+                    obscureText: !_passwordVisible,
+                    decoration: InputDecoration(
+                      hintText: 'Password',
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          // Based on passwordVisible state choose the icon
+                          Icons.visibility_off,
+                          color: Colors.red,
+                        ),
+                        onPressed: () {
+                          // Update the state i.e. toogle the state of passwordVisible variable
+                          setState(() {
+                            _passwordVisible = !_passwordVisible;
+                          });
+                        },
+                      ),
+                      hintStyle: TextStyle(
+                        fontSize: 16.sp,
+                        color: Color(0x4012232E),
+                        fontWeight: FontWeight.bold,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25),
+                        borderSide: const BorderSide(
+                          width: 0,
+                          style: BorderStyle.none,
+                        ),
+                      ),
+                      filled: true,
+                      fillColor: const Color(0xFFEEFBFB),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 0),
+                    ),
+                  ),
+                  if (error != null)
+                    if (error.startsWith("Pass"))
+                      Container(
+                          padding: EdgeInsets.only(top: 5, bottom: 5),
+                          margin: EdgeInsets.only(
+                              right:
+                                  (MediaQuery.of(context).size.width * 0.3).w),
+                          child: Text(
+                            error,
+                            style: TextStyle(
+                                color: Colors.red, fontWeight: FontWeight.w400),
+                          )),
+                ])),
+        SizedBox(
+          height: 2.4.h,
         ),
         Container(
-            height: 40,
+            height: 5.5.h,
             decoration: BoxDecoration(
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   begin: Alignment.topRight,
                   end: Alignment.bottomLeft,
                   colors: [
@@ -127,31 +187,43 @@ class _LoginState extends State<Login> {
                 ]),
             child: MaterialButton(
               onPressed: () {
-                UserProvider()
-                    .login(usernameController.text, passwordController.text);
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const HomeScreen()));
+                if (_formKey.currentState!.validate()) {
+                  print(passwordController.text);
+                  Provider.of<UserProvider>(context, listen: false)
+                      .login(usernameController.text, passwordController.text);
+                  Future.delayed(Duration(milliseconds: 500), () {
+                    setState(() {
+                      if (context.read<UserProvider>().error != "")
+                        error = context.read<UserProvider>().error;
+                    });
+                    print(error);
+                    if (error == null) {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const HomeScreen()));
+                    }
+                  });
+                }
               },
-              child: const Center(
+              child: Center(
                 child: Text(
                   "Login",
                   style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 24.sp,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFFEEFBFB)),
                 ),
               ),
             )),
-        const SizedBox(
-          height: 16,
+        SizedBox(
+          height: 1.6.h,
         ),
-        const Text(
+        Text(
           "Forgot password?",
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 18.sp,
             fontWeight: FontWeight.bold,
             color: Color(0xff4DA8DA),
-            height: 1,
+            height: 0.2.h,
           ),
         ),
       ],

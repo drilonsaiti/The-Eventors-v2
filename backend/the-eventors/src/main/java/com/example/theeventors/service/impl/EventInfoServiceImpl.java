@@ -37,7 +37,7 @@ public class EventInfoServiceImpl implements EventInfoService {
     }
 
     @Override
-    public EventInfo create(String title, String description, String location, MultipartFile coverImage, MultipartFile [] images, String createdBy) throws IOException {
+    public EventInfo create(String title, String description , MultipartFile coverImage, MultipartFile [] images, String createdBy) throws IOException {
         Image cImage =  imageRepository.save(Image.builder()
                 .name(coverImage.getOriginalFilename())
                 .type(coverImage.getContentType())
@@ -53,11 +53,11 @@ public class EventInfoServiceImpl implements EventInfoService {
                             Base64.getEncoder().encodeToString(file.getBytes()))).build()));
         }
 
-        return this.eventInfoRepository.save(new EventInfo(title,description,location,cImage,imgs,createdBy));
+        return this.eventInfoRepository.save(new EventInfo(title,description,cImage,imgs,createdBy));
     }
 
     @Override
-    public EventInfo update(Long id, String title, String description, String location, MultipartFile coverImage, MultipartFile [] images, String createdBy) throws IOException {
+    public EventInfo update(Long id, String title, String description , MultipartFile coverImage, MultipartFile [] images, String createdBy) throws IOException {
         EventInfo eventInfo = this.findById(id);
 
         Image cImage = this.imageRepository.findById(eventInfo.getCoverImage().getId()).orElseThrow(() -> new ImageNotFoundException(eventInfo.getCoverImage().getId()));
@@ -68,10 +68,10 @@ public class EventInfoServiceImpl implements EventInfoService {
 
         eventInfo.setTitle(title);
         eventInfo.setDescription(description);
-        eventInfo.setLocation(location);
         eventInfo.setCoverImage(cImage);
 
         eventInfo.getImages().clear();
+        System.out.println("Event infos get images length " + eventInfo.getImages().size());
         List<Image> imgs= new ArrayList<>();
         for (MultipartFile file : images) {
             imgs.add(imageRepository.save(Image.builder()

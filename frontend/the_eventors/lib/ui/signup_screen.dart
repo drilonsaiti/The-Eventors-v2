@@ -1,13 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:sizer/sizer.dart';
 import 'package:the_eventors/ui/widgets/login_button.dart';
 import 'package:the_eventors/ui/widgets/signup.dart';
-import 'package:the_eventors/ui/widgets/signup_button.dart';
-import '../ui/widgets/login.dart';
 
 import '../models/User.dart';
-import '../services/UserService.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -26,37 +22,40 @@ class SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xff007CC7),
-      body: SingleChildScrollView(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.height * 0.7,
-            child: CustomPaint(
-              painter: CurvePainter(false),
-              child: Container(
-                  padding: const EdgeInsets.only(bottom: 0),
-                  child: const Center(
-                    child: SingleChildScrollView(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 32,
-                          vertical: 16,
-                        ),
-                        child: SignUp()),
-                  )),
+    return Sizer(builder: (context, orientation, deviceType) {
+      return Scaffold(
+        backgroundColor: const Color(0xff007CC7),
+        body: SingleChildScrollView(
+            child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              height: 70.h,
+              child: CustomPaint(
+                painter: CurvePainter(false),
+                child: Container(
+                    padding: const EdgeInsets.only(bottom: 0),
+                    child: const Center(
+                      child: SingleChildScrollView(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 32,
+                            vertical: 16,
+                          ),
+                          child: SignUp()),
+                    )),
+              ),
             ),
-          ),
-          Container(
-            height: MediaQuery.of(context).size.height * 0.3,
-            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-            child: const LoginButton(),
-          )
-        ],
-      )),
-    );
+            Container(
+              height: 30.h,
+              padding:
+                  EdgeInsets.symmetric(horizontal: 32.0.sp, vertical: 16.0.sp),
+              child: const LoginButton(),
+            )
+          ],
+        )),
+      );
+    });
   }
 }
 

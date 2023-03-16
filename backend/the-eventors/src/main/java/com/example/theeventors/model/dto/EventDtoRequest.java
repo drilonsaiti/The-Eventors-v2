@@ -26,6 +26,7 @@ public class EventDtoRequest {
     String startTime;
     String duration;
 
+    String createdBy;
     String category;
     String guests;
 

@@ -30,7 +30,7 @@ public class ImageController {
 
     @GetMapping("image")
     public String getImage(Model model){
-        model.addAttribute("imagesList",this.imageRepository.findAll().get(0));
+        model.addAttribute("imagesList",this.imageRepository.findAll());
         return "image";
     }
 

@@ -28,12 +28,13 @@ public class AuthenticationService {
   private final UserService userService;
 
   public AuthenticationResponse register(RegisterRequest request) {
-    var user = this.userService.register(request.getUsername(), request.getPassword(), request.getRepeatPassword(), request.getName(),request.getSurname(),request.getRole());
+    var user = this.userService.register(request.getUsername(), request.getPassword(), request.getRepeatPassword(), request.getEmail());
 
     var jwtToken = jwtService.generateToken(user);
+    var jwtRefreshToken = jwtService.generateRefreshToken(user);
     return AuthenticationResponse.builder()
-        .token(jwtToken)
-        .build();
+            .token(jwtToken).refreshToken(jwtRefreshToken)
+            .build();
   }
 
   public AuthenticationResponse authenticate(AuthenticationRequest request) throws ServletException {
@@ -52,8 +53,9 @@ public class AuthenticationService {
     );
 
     var jwtToken = jwtService.generateToken(user);
+    var jwtRefreshToken = jwtService.generateRefreshToken(user);
     return AuthenticationResponse.builder()
-        .token(jwtToken)
+        .token(jwtToken).refreshToken(jwtRefreshToken)
         .build();
   }
 

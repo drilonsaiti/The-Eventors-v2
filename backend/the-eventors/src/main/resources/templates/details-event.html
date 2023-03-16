@@ -33,27 +33,13 @@
                     </ol>
                 </nav>
             </div>
-            <div class="col">
-                <div class="d-flex justify-content-end">
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Report
-                        </button>
+            <form th:action="@{'/dashboard/events/{id}/delete' (id=${event.getId()})}"
+                  th:method="POST">
+                <button type="submit" class="btn btn-sm btn-danger delete-balloon"><i
+                        class="fa fa-trash">Delete</i>
+                </button>
+            </form>
 
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <div th:each="type : ${reportsType}">
-
-                            <form th:action="@{'/reports/event/{id}' (id=${event.getId()})}"
-                                  th:method="POST">
-                            <input type="submit" class="dropdown-item btn default btn-sm"  name="type" th:value="${type.label}">
-                            </form>
-
-                        </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
         </div>
 
         <div class="row">
@@ -98,7 +84,7 @@
                             </div>
                             <div class="col-sm-9">
                                 <p class="text-muted mb-0" property="birthDate"
-                                   th:text="${event.getEventInfo().getLocation()}"></p>
+                                   th:text="${event.getAddress().getLocation()}"></p>
                             </div>
                         </div>
                         <hr>
@@ -132,68 +118,6 @@
                             </div>
                         </div>
                         <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <p class="mb-0">Going</p>
-                            </div>
-                            <div class="col-sm-9">
-                                <p class="text-muted mb-0" property="birthPlace"
-                                   th:text="${event.getActivity().getGoing().size() != 0 ? event.getActivity().getGoing().size() : 0}"></p>
-                            </div>
-                        </div>
-                     <!--   <div class="row">
-                            <div class="col-sm-3">
-                                <p class="mb-0">Going</p>
-                            </div>
-                            <div class="col-sm-9" th:each="imgs : ${event.getEventInfo().getImages()}">
-                                <img class="text-muted mb-0" property="birthPlace"
-                                   th:src="${imgs.getImageBase64()}" style="width: 100px;height: 100px">
-                            </div>
-                        </div>-->
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <p class="mb-0">Interested</p>
-                            </div>
-                            <div class="col-sm-9">
-                                <p class="text-muted mb-0" property="birthPlace"
-                                   th:text="${event.getActivity().getInterested().size() != 0 ? event.getActivity().getInterested().size() : 0}"></p>
-                            </div>
-                        </div>
-
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <p class="mb-0">Followers views</p>
-                            </div>
-                            <div class="col-sm-9">
-                                <p class="text-muted mb-0" property="birthPlace"
-                                   th:text="${event.getActivity().getActivity().getFollowers().size() != 0 ? event.getActivity().getActivity().getFollowers().size() : 0}"></p>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <p class="mb-0">Users views</p>
-                        </div>
-                        <div class="col-sm-9">
-                            <p class="text-muted mb-0" property="birthPlace"
-                               th:text="${event.getActivity().getActivity().getUsers().size() != 0 ? event.getActivity().getActivity().getUsers().size() : 0}"></p>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <p class="mb-0">Anonymous views</p>
-                        </div>
-                        <div class="col-sm-9">
-                            <p class="text-muted mb-0" property="birthPlace"
-                               th:text="${event.getActivity().getActivity().getAnonymous().size() != 0 ? event.getActivity().getActivity().getAnonymous().size() : 0}"></p>
-                        </div>
-                    </div>
-                </div>
-
             </div>
                <div class="row">
                            <div class="col-sm-3">
@@ -206,30 +130,7 @@
                            </div>
                        </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="card mb-4 mb-md-0">
-                            <div class="card-body">
-                                <div>
-                                    <form th:action="@{'/events/{id}/going' (id=${event.getId()})}"
-                                          th:method="POST">
-                                        <button type="submit" class="btn btn-sm btn-secondary"><i
-                                                class="fa fa-trash">Going</i>
-                                        </button>
-                                    </form>
-                                    <form th:action="@{'/events/{id}/interested' (id=${event.getId()})}"
-                                          th:method="POST">
-                                        <button type="submit" class="btn btn-sm btn-primary"><i
-                                                class="fa fa-trash">Interested</i>
-                                        </button>
-                                    </form>
-                                    <hr>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                </div>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card mb-4">

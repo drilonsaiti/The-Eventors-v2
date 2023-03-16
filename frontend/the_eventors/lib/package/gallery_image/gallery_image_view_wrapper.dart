@@ -40,6 +40,7 @@ class _GalleryImageViewWrapperState extends State<GalleryImageViewWrapper> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFF203647),
       appBar: AppBar(
         title: Text(widget.titleGallery ?? "Gallery"),
       ),

@@ -1,3 +1,4 @@
+/*
 package com.example.theeventors.web.controller;
 
 
@@ -29,7 +30,8 @@ public class MyActivityController {
         this.eventService = eventService;
     }
 
-    @GetMapping("my-activity")
+    */
+/*@GetMapping("my-activity")
     public String getActivity(Model model, HttpServletRequest req){
         MyActivity activity = this.myActivityService.findByUsername(req.getRemoteUser());
         List<Event> going = new ArrayList<>();
@@ -44,5 +46,7 @@ public class MyActivityController {
         model.addAttribute("comments",comment);
 
         return "my-activity";
-    }
+    }*//*
+
 }
+*/

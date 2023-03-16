@@ -3,6 +3,8 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
+import '../list_events_by_selected.dart';
+
 class TitleSearchWidget extends StatelessWidget {
   final String title;
   final ThemeData theme;
@@ -15,25 +17,18 @@ class TitleSearchWidget extends StatelessWidget {
       padding: const EdgeInsets.only(left: 16.0, right: 0.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.max,
         children: [
           Text(
             title,
-            style: theme.textTheme.titleMedium
-                ?.copyWith(fontWeight: FontWeight.w600),
+            style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w600, color: Color(0xFFEEFBFB)),
           ),
-          MaterialButton(
-            onPressed: () {},
-            minWidth: 50,
-            splashColor: theme.primaryColor.withAlpha(10),
-            highlightColor: theme.primaryColor.withAlpha(30),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(80)),
-            child: Icon(
-              Icons.arrow_right,
-              size: 20,
-              color: theme.primaryColor,
-            ),
-          )
+          Icon(
+            Icons.arrow_right,
+            size: 40,
+            color: Color(0xFFEEFBFB),
+          ),
         ],
       ),
     );

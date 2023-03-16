@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:the_eventors/ui/categories_screen.dart';
 import 'package:the_eventors/ui/home_screen.dart';
+
 import 'package:the_eventors/ui/login_screen.dart';
+import 'package:the_eventors/ui/widgets/top_profile_widget.dart';
+
+import '../services/Auth.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key, required this.title}) : super(key: key);
@@ -15,12 +18,19 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    checkUser();
+  }
+
+  checkUser() async {
     Future.delayed(
-        const Duration(seconds: 1),
-        () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const LoginScreen()),
-            ));
+        const Duration(seconds: 2),
+        () async => await Auth().checkRefresh()
+            ? Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const HomeScreen()))
+            : Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
+              ));
   }
 
   @override

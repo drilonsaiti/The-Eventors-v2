@@ -4,6 +4,8 @@ import com.example.theeventors.model.enumerations.BookmakrsStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,7 +14,7 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor
-
+@OnDelete(action = OnDeleteAction.CASCADE)
 public class Bookmark {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

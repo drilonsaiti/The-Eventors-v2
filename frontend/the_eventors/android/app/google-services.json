@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "258363441184",
+    "project_id": "the-eventors-app",
+    "storage_bucket": "the-eventors-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:258363441184:android:016a9327f49cb7ed51fc45",
+        "android_client_info": {
+          "package_name": "com.example.the_eventors"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "258363441184-c18mdgdev78bjuk4tmk38ugcf0hijmv8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoIiyCD1mRp-3pjyuWIgikQAcEyFk3HVo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "258363441184-c18mdgdev78bjuk4tmk38ugcf0hijmv8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

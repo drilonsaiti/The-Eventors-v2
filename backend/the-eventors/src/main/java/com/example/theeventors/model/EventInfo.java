@@ -16,7 +16,6 @@ public class EventInfo {
     Long id;
     String title;
     String description;
-    String location;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     Image coverImage;
@@ -24,10 +23,9 @@ public class EventInfo {
     List<Image> images;
     String createdBy;
 
-    public EventInfo(String title, String description, String location, Image coverImage,List<Image> images, String createdBy) {
+    public EventInfo(String title, String description , Image coverImage,List<Image> images, String createdBy) {
         this.title = title;
         this.description = description;
-        this.location = location;
         this.coverImage = coverImage;
         this.images = images;
         this.createdBy = createdBy;

@@ -18,9 +18,7 @@ public class RegisterRequest {
 
   private String repeatPassword;
 
-  private String name;
+  private String email;
 
-  private String surname;
 
-  private Role role;
 }

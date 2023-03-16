@@ -14,30 +14,31 @@ class EventHomeWidget extends StatefulWidget {
 }
 
 class _EventHomeWidget extends State<EventHomeWidget> {
+  List<Events?> events = [];
   @override
   void initState() {
     super.initState();
+    Provider.of<EventProvider>(context, listen: false).getEvents();
     Future.delayed(Duration.zero, () async {
-      Provider.of<EventProvider>(context, listen: false).getEvents();
+      events = context.read<EventProvider>().events;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final events = Provider.of<EventProvider>(context).events;
     return Consumer<EventProvider>(
         builder: (BuildContext context, EventProvider mainProvider, _) {
       return Container(
           height: MediaQuery.of(context).size.height,
-          padding: const  EdgeInsets.only(bottom: 80),
+          padding: const EdgeInsets.only(bottom: 80),
           child: ListView.builder(
-              padding: const  EdgeInsets.only(top: 10),
+              padding: const EdgeInsets.only(top: 10),
               scrollDirection: Axis.vertical,
               itemCount: events.length,
               itemBuilder: (context, index) {
                 return Container(
                   clipBehavior: Clip.hardEdge,
-                  margin: const  EdgeInsets.only(bottom: 16),
+                  margin: const EdgeInsets.only(bottom: 16),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     color: Colors.grey.shade100,
@@ -46,8 +47,8 @@ class _EventHomeWidget extends State<EventHomeWidget> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                     const  Padding(
-                        padding:  EdgeInsets.all(10),
+                      const Padding(
+                        padding: EdgeInsets.all(10),
                         child: Text("admin"),
                       ),
                       Container(
@@ -64,12 +65,12 @@ class _EventHomeWidget extends State<EventHomeWidget> {
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(events[index].title,
+                                Text(events[index]!.title,
                                     style: widget.theme.textTheme.titleMedium),
-                               const  SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
-                                Text(events[index].location,
+                                Text(events[index]!.location,
                                     style: widget.theme.textTheme.bodyMedium),
                                 const SizedBox(
                                   height: 8,

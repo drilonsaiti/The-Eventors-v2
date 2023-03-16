@@ -1,5 +1,6 @@
 package com.example.theeventors.service.impl;
 
+import com.example.theeventors.config.JwtService;
 import com.example.theeventors.model.Event;
 import com.example.theeventors.model.Report;
 import com.example.theeventors.model.dto.ReportByEventIdDto;
@@ -9,6 +10,7 @@ import com.example.theeventors.model.exceptions.ReportNotFoundException;
 import com.example.theeventors.repository.EventRepository;
 import com.example.theeventors.repository.ReportRepository;
 import com.example.theeventors.service.ReportService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,16 +19,12 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@AllArgsConstructor
 public class ReportServiceImpl implements ReportService {
 
     private final ReportRepository reportRepository;
     private final EventRepository eventRepository;
-
-    public ReportServiceImpl(ReportRepository reportRepository, EventRepository eventRepository) {
-        this.reportRepository = reportRepository;
-        this.eventRepository = eventRepository;
-    }
-
+    private final JwtService jwtService;
 
     @Override
     public List<Report> findAll() {
@@ -44,7 +42,8 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public Report create(String username, Long idEvent, String type) {
+    public Report create(String token, Long idEvent, String type) {
+        String username = jwtService.extractUsername(token);
         ReportType reportType =  Arrays.stream(ReportType.values()).filter(r -> r.label.equals(type)).toList().get(0);
         return this.reportRepository.save(new Report(username,idEvent,reportType));
     }

@@ -5,6 +5,8 @@ import com.example.theeventors.model.enumerations.Role;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -17,17 +19,25 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "eventors_users")
-
+@OnDelete(action = OnDeleteAction.CASCADE)
 public class User implements UserDetails {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
     private String username;
 
     private String password;
 
-    private String name;
+    private String fullName;
 
-    private String surname;
+    private String email;
+
+    private String verifyCode;
+
+    private String bio;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Image profileImage;
 
     @ElementCollection
     List<String> following;
@@ -36,7 +46,11 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER,orphanRemoval = true)
     private List<Bookmark> bookmarks;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 
+    private Notification notification;
+    /*@OneToMany(fetch = FetchType.EAGER,orphanRemoval = true)
+    private List<Event> events;*/
 
     private boolean isAccountNonExpired = true;
     private boolean isAccountNonLocked = true;
@@ -50,14 +64,18 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String username, String password, String name, String surname, Role role) {
+    public User(String username, String password, String email) {
         this.username = username;
         this.password = password;
-        this.name = name;
-        this.surname = surname;
-        this.role = role;
+        this.fullName = "" ;
+        this.email = email;
+        this.bio = "";
+        this.role = Role.ROLE_USER;
         this.followers = new ArrayList<>();
         this.following = new ArrayList<>();
+        this.profileImage = null;
+        this.verifyCode = "";
+       // this.events = new ArrayList<>();
     }
 
     @Override

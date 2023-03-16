@@ -13,8 +13,11 @@ import java.util.function.Function;
 public class UserUsernameMapper implements Function<User, UserUsernameDto> {
     @Override
     public UserUsernameDto apply(User u) {
+
+        String photo = u.getProfileImage() != null ? u.getProfileImage().getImageBase64().replaceAll("data:application/octet-stream;base64,","") : "";
         return new UserUsernameDto(
-                u.getUsername()
+                u.getUsername(),
+                photo
         );
     }
 }

@@ -8,4 +8,6 @@ import lombok.Data;
 public class UserUsernameDto {
 
     String username;
+
+    String profileImage;
 }

@@ -1,29 +1,33 @@
-/*
 package com.example.theeventors.web.rest;
 
 import com.example.theeventors.model.CommentAndReplies;
-import com.example.theeventors.service.CommentAndRepliesService;
-import com.example.theeventors.service.EventService;
-import com.example.theeventors.service.MyActivityService;
+import com.example.theeventors.model.dto.ActivityOfEventDto;
+import com.example.theeventors.service.*;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin
-@RequestMapping("/events")
+@RequestMapping("/api/activity")
+@AllArgsConstructor
 public class ActivityRestController {
 
     private final EventService eventService;
     private final MyActivityService myActivityService;
 
+    private final ActivityPerEventsService service;
+
     private final CommentAndRepliesService commentAndRepliesService;
 
-    public ActivityRestController(EventService eventService, MyActivityService myActivityService, CommentAndRepliesService commentAndRepliesService) {
-        this.eventService = eventService;
-        this.myActivityService = myActivityService;
-        this.commentAndRepliesService = commentAndRepliesService;
+    @GetMapping("{id}")
+    public ResponseEntity<ActivityOfEventDto> getActivity(@PathVariable Long id) {
+        return ResponseEntity.ok(this.service.getActivity(id));
     }
+
 
     @PostMapping("/{id}/going")
     public ResponseEntity.BodyBuilder addGoingUser(@PathVariable Long id, HttpServletRequest req) {
@@ -52,4 +56,3 @@ public class ActivityRestController {
 
     }
 }
-*/

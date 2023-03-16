@@ -14,17 +14,18 @@ class EventWidget extends StatefulWidget {
 }
 
 class _EventWidgetState extends State<EventWidget> {
+  List<Events?> events = [];
   @override
   void initState() {
     super.initState();
+    Provider.of<EventProvider>(context, listen: false).getEvents();
     Future.delayed(Duration.zero, () async {
-      Provider.of<EventProvider>(context, listen: false).getEvents();
+      events = context.read<EventProvider>().events;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final events = Provider.of<EventProvider>(context).events;
     return Consumer<EventProvider>(
         builder: (BuildContext context, EventProvider mainProvider, _) {
       return Container(
@@ -63,12 +64,12 @@ class _EventWidgetState extends State<EventWidget> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(events[index].title,
+                              Text(events[index]!.title,
                                   style: widget.theme.textTheme.titleMedium),
                               const SizedBox(
                                 height: 5,
                               ),
-                              Text(events[index].location,
+                              Text(events[index]!.location,
                                   style: widget.theme.textTheme.bodyMedium),
                               const SizedBox(
                                 height: 8,

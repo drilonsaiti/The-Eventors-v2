@@ -12,19 +12,13 @@ class RegisterDto {
 
   String repeatPassword;
 
-  String name;
-
-  String surname;
-
-  String role;
+  String email;
 
   RegisterDto({
     required this.username,
     required this.password,
     required this.repeatPassword,
-    required this.name,
-    required this.surname,
-    required this.role,
+    required this.email,
   });
 
   //List<String> following;
@@ -36,17 +30,13 @@ class RegisterDto {
         username: json["username"],
         password: json["password"],
         repeatPassword: json["repeatPassword"],
-        name: json["name"],
-        surname: json["surname"],
-        role: json["role"],
+        email: json["email"],
       );
 
   Map<String, dynamic> toJson() => {
         "username": username,
         "password": password,
         "repeatPassword": repeatPassword,
-        "name": name,
-        "surname": surname,
-        "role": role,
+        "email": email,
       };
 }

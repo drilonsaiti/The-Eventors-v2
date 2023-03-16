@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;
 
 import java.lang.annotation.ElementType;
@@ -15,6 +17,7 @@ import java.lang.annotation.ElementType;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@OnDelete(action = OnDeleteAction.CASCADE)
 public class Image {
     @Id
     @Column(name = "id")

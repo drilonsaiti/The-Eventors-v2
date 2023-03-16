@@ -28,13 +28,14 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category create(String name, String description) {
-        return this.categoryRepository.save(new Category(name,description));
+    public Category create(String imageUrl,String name, String description) {
+        return this.categoryRepository.save(new Category(imageUrl,name,description));
     }
 
     @Override
-    public Category update(Long id, String name, String description) {
+    public Category update(Long id,String imageUrl, String name, String description) {
         Category category = this.findById(id);
+        category.setImageUrl(imageUrl);
         category.setName(name);
         category.setDescription(description);
         return this.categoryRepository.save(category);

@@ -27,7 +27,7 @@ public class ReportController {
     public String getReports(Model model){
         Map<Long, List<Report>> reportGrouping = this.reportService.findAll()
                         .stream().collect(Collectors.groupingBy(Report::getEventId));
-        model.addAttribute("reports",this.reportService.mapToList(reportGrouping));
+        model.addAttribute("reports",this.reportService.mapToList(reportGrouping).stream().sorted());
         return "reports";
     }
 

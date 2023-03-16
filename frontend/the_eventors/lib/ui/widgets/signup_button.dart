@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../signup_screen.dart';
 
@@ -8,27 +9,27 @@ class SignupButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        const SizedBox(
-          height: 25,
+        SizedBox(
+          height: 35.h,
         ),
-        const Text(
+        Text(
           "OR",
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 35,
+            fontSize: 35.sp,
             fontWeight: FontWeight.bold,
             height: 1,
             color: Color(0xFF12232E),
           ),
+          textScaleFactor: 1.0,
         ),
-        const SizedBox(
-          height: 25,
+        SizedBox(
+          height: 25.h,
         ),
         Container(
-            height: 40,
+            height: 40.h,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topRight,
@@ -56,14 +57,15 @@ class SignupButton extends StatelessWidget {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => const SignupScreen()));
               },
-              child: const Center(
+              child: Center(
                 child: Text(
                   "SIGN UP",
                   style: TextStyle(
-                    fontSize: 24,
+                    fontSize: 24.sp,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFFEEFBFB),
                   ),
+                  textScaleFactor: 1.0,
                 ),
               ),
             )),

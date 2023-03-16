@@ -1,3 +1,4 @@
+/*
 package com.example.theeventors.web.controller;
 
 import com.example.theeventors.service.BookmarkService;
@@ -35,3 +36,4 @@ public class BookmarkController {
         return "redirect:/events";
     }
 }
+*/

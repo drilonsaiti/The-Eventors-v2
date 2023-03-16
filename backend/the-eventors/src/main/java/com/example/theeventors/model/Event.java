@@ -19,6 +19,8 @@ public class Event {
     Long id;
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     EventInfo eventInfo;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    EventAddress address;
 
     @ManyToOne
     Category category;
@@ -31,9 +33,10 @@ public class Event {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     List<Comments> comments;
 
-    public Event(Category category,EventInfo eventInfo, EventTimes eventTimes, Guest guests, Activity activity) {
+    public Event(Category category,EventInfo eventInfo,EventAddress address, EventTimes eventTimes, Guest guests, Activity activity) {
         this.category = category;
         this.eventInfo = eventInfo;
+        this.address = address;
         this.eventTimes = eventTimes;
         this.guests = guests;
         this.activity = activity;

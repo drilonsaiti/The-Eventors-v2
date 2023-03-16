@@ -11,10 +11,12 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
+    String imageUrl;
     String name;
     String description;
 
-    public Category(String name, String description) {
+    public Category( String imageUrl,String name, String description) {
         this.name = name;
         this.description = description;
     }

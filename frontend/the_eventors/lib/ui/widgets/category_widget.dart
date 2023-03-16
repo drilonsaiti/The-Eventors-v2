@@ -1,94 +1,113 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:the_eventors/models/Category.dart';
-import 'package:the_eventors/providers/CategoryProvider.dart';
-import 'package:the_eventors/repository/CategoryRepository.dart';
-import 'package:zoom_tap_animation/zoom_tap_animation.dart';
+import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:provider/provider.dart';
+import 'package:the_eventors/providers/CategoryProvider.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
-class CategoryWidget extends StatefulWidget {
-  final ThemeData theme;
-  const CategoryWidget({Key? key, required this.theme}) : super(key: key);
+import '../../models/Category.dart';
 
-  @override
-  State<CategoryWidget> createState() => _CategoryWidgetState();
-}
-
-class _CategoryWidgetState extends State<CategoryWidget> {
-  List<Category> categories = [];
-
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(Duration.zero, () async {
-      Provider.of<CategoryProvider>(context, listen: false).getCategories();
-    });
-  }
+class CategoryWidget extends StatelessWidget {
+  final Category category;
+  const CategoryWidget({Key? key, required this.category}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final categories = Provider.of<CategoryProvider>(context).categories;
-    return Consumer<CategoryProvider>(
-        builder: (BuildContext context, CategoryProvider mainProvider, _) {
-      return Container(
-          height: 60,
-          child: ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            scrollDirection: Axis.horizontal,
-            itemCount: categories.length,
-            itemBuilder: (context, index) {
-              return _buildCategory(
-                  categories[index], index, widget.theme, categories.length);
-            },
-          ));
-    });
-  }
-}
-
-Widget _buildCategory(Category category, index, theme, length) {
-  return ZoomTapAnimation(
-    beginDuration: const Duration(milliseconds: 300),
-    endDuration: const Duration(milliseconds: 500),
-    child: Container(
-      clipBehavior: Clip.hardEdge,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      margin: EdgeInsets.only(right: length - 1 == index ? 0 : 8),
-      child: Stack(
-        children: [
-          Container(
-            width: 120,
-            height: 60,
-            child: CachedNetworkImage(
-              imageUrl:
-                  "https://images.unsplash.com/photo-1589894404892-7310b92ea7a2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2574&q=80",
-              fit: BoxFit.cover,
+    final appState = Provider.of<CategoryProvider>(context);
+    final isSelected = appState.selectedCategoryId == category.id;
+    return GestureDetector(
+        onTap: () {
+          if (!isSelected) {
+            appState.updateCategoryId(category.id);
+          }
+        },
+        child: ZoomTapAnimation(
+          beginDuration: const Duration(milliseconds: 300),
+          endDuration: const Duration(milliseconds: 500),
+          child: Container(
+            margin: EdgeInsets.only(right: 8),
+            padding: EdgeInsets.only(top: 1, bottom: 1, left: 2, right: 0),
+            /* clipBehavior: Clip.hardEdge,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: isSelected
+                  ? Border.all(
+                      color: const Color(0xCCEEFBFB).withOpacity(0.5), width: 2)
+                  : null,
+            ),*/
+            child: Stack(
+              children: [
+                Positioned(
+                    top: 0,
+                    left: 130,
+                    right: 0,
+                    bottom: 0,
+                    child: Container(
+                      //clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: isSelected
+                            ? Border.all(
+                                color: const Color(0xCCEEFBFB).withOpacity(0.5),
+                                width: 4)
+                            : null,
+                      ),
+                    )),
+                Container(
+                  width: 120,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: isSelected
+                        ? Border.all(
+                            color: const Color(0xCCEEFBFB).withOpacity(0.5),
+                            width: 2)
+                        : null,
+                  ),
+                  child: CachedNetworkImage(
+                    imageUrl: category.imageUrl,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: Container(
+                    height: 80,
+                    decoration: BoxDecoration(
+                        color: Colors.black.withAlpha(110),
+                        boxShadow: isSelected
+                            ? [
+                                BoxShadow(
+                                  color: Colors.white.withOpacity(0.8),
+                                  spreadRadius: 2,
+                                  blurRadius: 25,
+                                  offset: Offset(
+                                      -20, -2), // changes position of shadow
+                                ),
+                              ]
+                            : []),
+                    child: Center(
+                      child: Text(
+                        category.name,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Color(
+                              0xFFEEFBFB,
+                            ),
+                            fontSize:
+                                category.name.contains("Conference") ? 18 : 20),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: Container(
-              height: 80,
-              decoration: BoxDecoration(
-                color: Colors.black.withAlpha(110),
-              ),
-              child: Center(
-                child: Text(
-                  category.name,
-                  textAlign: TextAlign.center,
-                  style:
-                      theme.textTheme.subtitle1?.copyWith(color: Colors.white),
-                ),
-              ),
-            ),
-          )
-        ],
-      ),
-    ),
-  );
+        ));
+  }
 }

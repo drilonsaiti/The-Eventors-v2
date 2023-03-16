@@ -33,14 +33,14 @@ public class CategoryRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Category> create(@RequestParam String name,@RequestParam String description) {
-        return ResponseEntity.ok(this.categoryService.create(name, description));
+    public ResponseEntity<Category> create(@RequestParam String imageUrl,@RequestParam String name,@RequestParam String description) {
+        return ResponseEntity.ok(this.categoryService.create(imageUrl,name, description));
     }
 
     @PostMapping("/{id}")
 
-    public ResponseEntity<Category> update(@PathVariable Long id, @RequestParam String name,@RequestParam String description) {
-        return ResponseEntity.ok(this.categoryService.update(id, name, description));
+    public ResponseEntity<Category> update(@PathVariable Long id,@RequestParam String imageUrl, @RequestParam String name,@RequestParam String description) {
+        return ResponseEntity.ok(this.categoryService.update(id,imageUrl, name, description));
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> delete(@PathVariable Long id) {

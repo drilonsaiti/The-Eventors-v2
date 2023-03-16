@@ -10,8 +10,8 @@ public interface CategoryService {
 
     List<Category> findAll();
     Category findById(Long id);
-    Category create(String name, String description);
+    Category create(String imageUrl,String name, String description);
 
-    Category update(Long id,String name, String description);
+    Category update(Long id,String imageUrl,String name, String description);
     Boolean delete(Long id);
 }
