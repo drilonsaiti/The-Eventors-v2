@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:the_eventors/models/dto/MyEventResponseDto.dart';
-import 'package:the_eventors/repository/MyActivityRepository.dart';
 
 import '../models/dto/MyCommentsResponseDto.dart';
+import '../services/MyActivityRepository.dart';
 
 class MyActivityProvider extends ChangeNotifier {
   final MyActivityRepository _repository = MyActivityRepository();
@@ -13,6 +13,7 @@ class MyActivityProvider extends ChangeNotifier {
   List<MyEventResponseDto> myBookmarks = [];
   List<MyEventResponseDto> activityProfile = [];
   List<int> check = [];
+  bool notifications = false;
 
   List<MyCommentsResponseDto> myComments = [];
   String checkGoingBt = "false";
@@ -69,7 +70,8 @@ class MyActivityProvider extends ChangeNotifier {
 
   getMyComments() async {
     myComments = await _repository.getMyComments();
-    notifyListeners();
+    print("MY COMMENTs");
+    print(myComments);
   }
 
   checkGoing(int id) async {
@@ -85,5 +87,14 @@ class MyActivityProvider extends ChangeNotifier {
   removeGoing(int id) async {
     myGoing.removeWhere((element) => element.id == id);
     notifyListeners();
+  }
+
+  /*void readNotifications() {
+    _repository.readNotification();
+  }*/
+
+  notificationsStatus() async {
+    notifications = await _repository.checkNoReadNotifications();
+    // _repository.getNotificatons();
   }
 }

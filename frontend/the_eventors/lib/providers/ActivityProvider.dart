@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:the_eventors/repository/EventRepository.dart';
 
 import '../models/dto/ActivityOfEventDto.dart';
+import '../services/EventRepository.dart';
 
 class ActivityProvider extends ChangeNotifier {
   final EventRepository _eventCategory = EventRepository();

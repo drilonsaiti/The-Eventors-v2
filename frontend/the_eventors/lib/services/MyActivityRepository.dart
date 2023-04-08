@@ -173,8 +173,19 @@ class MyActivityRepository {
     return jsonResponse.map((e) => Notifications.fromJson(e)).toList();
   }
 
-  Future<bool> checkNoReadNotifications() async {
+  Future<dynamic> checkNoReadNotifications() async {
     List<Notifications> list = await getNotificatons();
+
+    if (list.isEmpty) return true;
     return list.where((e) => e.read == false).isEmpty;
+  }
+
+  void readNotification() async {
+    print("READ NOTIFI");
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? token = pref.getString('token');
+    Map<String, dynamic> body = {'token': token};
+    http.Response response =
+        await _apiService.post("/my-activity/notifications/read", body);
   }
 }

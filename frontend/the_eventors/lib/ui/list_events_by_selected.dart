@@ -9,7 +9,6 @@ import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 import 'package:the_eventors/models/dto/ListingEventNearRepsonseDto.dart';
-import 'package:the_eventors/repository/EventRepository.dart';
 import 'package:the_eventors/ui/detail_event_screen.dart';
 import 'package:the_eventors/ui/multi_step_form_screen.dart';
 import 'package:the_eventors/ui/profile_screen.dart';
@@ -18,7 +17,7 @@ import 'package:badges/badges.dart' as badges;
 import '../providers/EventProvider.dart';
 import '../providers/MyActivityProvider.dart';
 import '../providers/UserProvider.dart';
-import '../repository/MyActivityRepository.dart';
+import '../services/EventRepository.dart';
 import 'all_near_events_map_screen.dart';
 import 'home_screen.dart';
 import 'map_screen.dart';
@@ -76,11 +75,8 @@ class _ListEventScreenState extends State<ListEventScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(events.length);
-    bool notifications = false;
-    MyActivityRepository()
-        .checkNoReadNotifications()
-        .then((value) => notifications = value);
+       Provider.of<MyActivityProvider>(context).notificationsStatus();
+
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         builder: (context, child) {
@@ -162,18 +158,25 @@ class _ListEventScreenState extends State<ListEventScreen> {
                                             ));
                                       },
                                       icon: Column(children: [
-                                        if (!notifications)
-                                          SizedBox(
-                                            height: 4,
-                                          ),
-                                        if (!notifications)
+                                        SizedBox(
+                                          height: 3,
+                                        ),
+                                        if (!context
+                                            .read<MyActivityProvider>()
+                                            .notifications)
                                           const badges.Badge(
                                             badgeContent: Text(''),
                                             child: Icon(
-                                                Icons.notifications_outlined),
+                                                Icons.notifications_outlined,
+                                              color: Color(0xFFEEFBFB),
+                                            ),
                                           ),
-                                        if (notifications)
-                                          Icon(Icons.notifications)
+                                        if (context
+                                            .read<MyActivityProvider>()
+                                            .notifications)
+                                          Icon(Icons.notifications_outlined,
+                                            color: Color(0xFFEEFBFB),
+                                          )
                                       ]),
                                       color: Color(0xFFEEFBFB)),
                                   IconButton(

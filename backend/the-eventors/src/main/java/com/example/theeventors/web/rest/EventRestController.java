@@ -91,7 +91,7 @@ public class EventRestController {
         return ResponseEntity.ok(this.eventService.findById(id));
     }
 
-    @GetMapping("/{id}/details")
+    @GetMapping("/details/{id}")
     public ResponseEntity<EventsDto> showDetails(@PathVariable Long id) {
         System.out.println("ITS CALLED");
         //this.activity.countUsers(id,token);

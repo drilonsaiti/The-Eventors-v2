@@ -141,5 +141,15 @@ public class UserRestController {
 
     }
 
+    @PostMapping("my-following")
+    public ResponseEntity<List<String>> getMyFollowing(@RequestBody TokenDto dto){
+        return ResponseEntity.ok(this.userService.myFollowing(dto.getToken()));
+    }
+
+    @PostMapping("my-followers")
+    public ResponseEntity<List<String>> getMyFollowers(@RequestBody TokenDto dto){
+        return ResponseEntity.ok(this.userService.myFollowers(dto.getToken()));
+    }
+
 
 }

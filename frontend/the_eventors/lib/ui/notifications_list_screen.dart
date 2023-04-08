@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:the_eventors/ui/profile_screen.dart';
 import 'package:the_eventors/ui/search_events_screen.dart';
 
 import '../models/Notifications.dart';
-import '../repository/MyActivityRepository.dart';
+import '../services/MyActivityRepository.dart';
 import 'all_near_events_map_screen.dart';
 import 'detail_event_screen.dart';
 import 'home_screen.dart';
@@ -30,10 +29,13 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
     // TODO: implement initState
     super.initState();
     notifications = MyActivityRepository().getNotificatons();
+    //Provider.of<MyActivityProvider>(context, listen: false).readNotifications();
   }
 
   @override
   Widget build(BuildContext context) {
+    MyActivityRepository().readNotification();
+
     RefreshController _refreshController =
         RefreshController(initialRefresh: false);
     void _onRefresh() async {
@@ -129,7 +131,16 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                                         icon: Icon(Icons.notifications),
                                         color: Color(0xFFEEFBFB)),
                                     IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProfileScreen(
+                                                  username: "",
+                                                ),
+                                              ));
+                                        },
                                         icon: Icon(Icons.person_outlined),
                                         color: Color(0xFFEEFBFB)),
                                   ],

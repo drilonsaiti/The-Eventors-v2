@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:the_eventors/repository/CategoryRepository.dart';
 
 import '../models/Category.dart';
+import '../services/CategoryRepository.dart';
 
 class CategoryProvider extends ChangeNotifier {
   final CategoryRepository _categoryRepository = CategoryRepository();
@@ -14,7 +14,6 @@ class CategoryProvider extends ChangeNotifier {
 
   void updateCategoryId(int selectedCategoryId) {
     this.selectedCategoryId = selectedCategoryId;
-    print(this.selectedCategoryId);
     notifyListeners();
   }
 }

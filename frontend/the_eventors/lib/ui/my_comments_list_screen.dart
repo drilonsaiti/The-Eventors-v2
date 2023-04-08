@@ -7,6 +7,7 @@ import 'package:sizer/sizer.dart';
 import 'package:the_eventors/providers/MyActivityProvider.dart';
 import 'package:the_eventors/ui/detail_event_screen.dart';
 
+import '../services/MyActivityRepository.dart';
 import 'comments_screen.dart';
 
 class MyCommentListScreen extends StatefulWidget {
@@ -34,7 +35,7 @@ class _MyCommentListScreenState extends State<MyCommentListScreen> {
           backgroundColor: const Color(0xFF203647),
           title: Container(
               child: const Text(
-            "snapshot.data",
+            "Comments",
             style: TextStyle(color: Color(0xFFEEFBFB)),
           )),
         ),
@@ -42,8 +43,10 @@ class _MyCommentListScreenState extends State<MyCommentListScreen> {
             child: Container(
                 padding: const EdgeInsets.all(10),
                 child: FutureBuilder(
-                    future: MyActivityProvider().getMyComments(),
+                    future: MyActivityRepository().getMyComments(),
                     builder: (context, AsyncSnapshot snapshot) {
+                      print(snapshot.hasData);
+                      print(snapshot.data);
                       if (snapshot.hasData) {
                         return ListView.separated(
                           padding: const EdgeInsets.only(top: 10),

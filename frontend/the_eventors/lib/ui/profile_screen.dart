@@ -13,7 +13,7 @@ import 'package:the_eventors/ui/widgets/body_profile_widget.dart';
 import 'package:the_eventors/ui/widgets/top_profile_widget.dart';
 
 import '../models/dto/UserProfileDto.dart';
-import '../repository/MyActivityRepository.dart';
+import '../providers/MyActivityProvider.dart';
 import 'all_near_events_map_screen.dart';
 import 'bottom_bar.dart';
 import 'edit_profile_screen.dart';
@@ -82,10 +82,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool notifications = false;
-    MyActivityRepository()
-        .checkNoReadNotifications()
-        .then((value) => notifications = value);
+    Provider.of<MyActivityProvider>(context).notificationsStatus();
+
     return isLoading
         ? Scaffold(
             backgroundColor: Color(0xFF203647),
@@ -166,18 +164,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               ));
                                         },
                                         icon: Column(children: [
-                                          if (!notifications)
-                                            SizedBox(
-                                              height: 4,
-                                            ),
-                                          if (!notifications)
+                                          SizedBox(
+                                            height: 3,
+                                          ),
+                                          if (!context
+                                              .read<MyActivityProvider>()
+                                              .notifications)
                                             const badges.Badge(
                                               badgeContent: Text(''),
                                               child: Icon(
-                                                  Icons.notifications_outlined),
+                                                Icons.notifications_outlined,
+                                                color: Color(0xFFEEFBFB),
+                                              ),
                                             ),
-                                          if (notifications)
-                                            Icon(Icons.notifications)
+                                          if (context
+                                              .read<MyActivityProvider>()
+                                              .notifications)
+                                            Icon(
+                                              Icons.notifications_outlined,
+                                              color: Color(0xFFEEFBFB),
+                                            )
                                         ]),
                                       ),
                                       IconButton(
@@ -284,7 +290,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     Container(
                                       //width: 35.0,
                                       child: IconButton(
-                                        icon: const Icon(Icons.share),
+                                        icon: const Icon(Icons.add),
                                         color: const Color(0xFFEEFBFB),
                                         iconSize: 30.0,
                                         onPressed: () {

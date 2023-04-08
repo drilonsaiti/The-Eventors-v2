@@ -9,7 +9,7 @@ import 'package:the_eventors/providers/EventProvider.dart';
 import 'package:the_eventors/providers/UserProvider.dart';
 import 'package:the_eventors/ui/detail_event_screen.dart';
 import 'package:the_eventors/ui/profile_screen.dart';
-import '../repository/MyActivityRepository.dart';
+import '../providers/MyActivityProvider.dart';
 
 import 'all_near_events_map_screen.dart';
 import 'home_screen.dart';
@@ -44,10 +44,8 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool notifications = false;
-    MyActivityRepository()
-        .checkNoReadNotifications()
-        .then((value) => notifications = value);
+    Provider.of<MyActivityProvider>(context).notificationsStatus();
+
     return GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
         child: MaterialApp(
@@ -108,16 +106,22 @@ class _SearchScreenState extends State<SearchScreen> {
                                   ));
                             },
                             icon: Column(children: [
-                              if (!notifications)
-                                SizedBox(
-                                  height: 4,
-                                ),
-                              if (!notifications)
+                              SizedBox(
+                                height: 3,
+                              ),
+                              if (!context
+                                  .read<MyActivityProvider>()
+                                  .notifications)
                                 const badges.Badge(
                                   badgeContent: Text(''),
-                                  child: Icon(Icons.notifications_outlined),
+                                  child: Icon(Icons.notifications_outlined,
+                                    color: Color(0xFFEEFBFB),
+                                  ),
                                 ),
-                              if (notifications) Icon(Icons.notifications)
+                              if (context
+                                  .read<MyActivityProvider>()
+                                  .notifications)
+                                Icon(Icons.notifications_outlined,color: Color(0xFFEEFBFB),)
                             ]),
                           ),
                           IconButton(

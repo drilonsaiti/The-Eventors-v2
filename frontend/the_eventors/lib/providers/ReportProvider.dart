@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:the_eventors/repository/CategoryRepository.dart';
 
 import '../models/Report.dart';
-import '../repository/ReportRepository.dart';
+import '../services/ReportRepository.dart';
 
 class ReportProvider extends ChangeNotifier {
   final ReportRepository _reportRepository = ReportRepository();

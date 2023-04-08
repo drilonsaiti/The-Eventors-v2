@@ -35,7 +35,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
               padding:
                   EdgeInsets.only(left: MediaQuery.of(context).size.width / 5),
               child: const Text(
-                "Settings",
+                "Security",
                 style: TextStyle(color: Color(0xFFEEFBFB)),
               )),
         ),

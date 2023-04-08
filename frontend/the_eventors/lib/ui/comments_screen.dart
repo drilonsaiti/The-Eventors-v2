@@ -72,46 +72,23 @@ class _CommentScreenState extends State<CommentScreen> {
                 appBar: AppBar(
                   iconTheme: const IconThemeData(color: Color(0xFFEEFBFB)),
                   automaticallyImplyLeading: false,
-                  title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            Navigator.pop(context, true);
-                          },
-                          icon: const Icon(
-                            Icons.arrow_back,
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 0),
-                          child: Text(
-                            "Comments",
-                            style: TextStyle(color: Color(0xFFEEFBFB)),
-                          ),
-                        ),
-                        Container(
-                          //width: 35.0,
-                          child: IconButton(
-                            icon: const Icon(
-                              Icons.share,
-                            ),
-                            iconSize: 30.0,
-                            color: const Color(0xFFEEFBFB),
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          const MultiStepFormPage()))
-                                  .then((value) => setState(() {
-                                        isLoading = true;
-                                        initState();
-                                      }));
-                            },
-                          ),
-                        )
-                      ]),
+                  title: Row(children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pop(context, true);
+                      },
+                      icon: const Icon(
+                        Icons.arrow_back,
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 0),
+                      child: Text(
+                        "Comments",
+                        style: TextStyle(color: Color(0xFFEEFBFB)),
+                      ),
+                    ),
+                  ]),
                   backgroundColor: const Color(0xFF12232E),
                 ),
                 body: Container(

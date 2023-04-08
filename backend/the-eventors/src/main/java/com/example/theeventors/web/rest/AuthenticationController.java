@@ -1,6 +1,10 @@
-package com.example.theeventors.config.auth;
+package com.example.theeventors.web.rest;
 
 import com.example.theeventors.config.JwtService;
+import com.example.theeventors.config.auth.AuthenticationRequest;
+import com.example.theeventors.config.auth.AuthenticationResponse;
+import com.example.theeventors.config.auth.AuthenticationService;
+import com.example.theeventors.config.auth.RegisterRequest;
 import com.example.theeventors.model.User;
 import com.example.theeventors.model.dto.*;
 import com.example.theeventors.model.exceptions.*;
@@ -44,7 +48,7 @@ public class AuthenticationController {
   @PostMapping("/login")
   @ExceptionHandler(value = { BadCredentialsException.class, UserNotFoundException.class })
   public ResponseEntity<?> authenticate(
-          @RequestBody AuthenticationRequest request,HttpServletRequest req,final RuntimeException ex
+          @RequestBody AuthenticationRequest request, HttpServletRequest req, final RuntimeException ex
           ) throws ServletException {
     System.out.println("LOGIN");
     try {

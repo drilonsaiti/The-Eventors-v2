@@ -1,14 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:the_eventors/models/dto/UserProfileDto.dart';
-import 'package:the_eventors/repository/UserRepository.dart';
 import '../models/dto/RegisterDto.dart';
 import '../models/dto/UserUsernameDto.dart';
+import '../services/UserRepository.dart';
 
 class UserProvider extends ChangeNotifier {
   final UserRepository _userRepository = UserRepository();
 
   List<UserUsernameDto> findUsername = [];
   List<UserUsernameDto> users = [];
+  List<UserUsernameDto> myFollowing = [];
+  List<UserUsernameDto> myFollowers = [];
+
   int countFollowing = 0;
   String checkBM = "false";
   String username = "";
@@ -154,5 +157,15 @@ class UserProvider extends ChangeNotifier {
   void deleteAccount() {
     _userRepository.deleteAccount();
     notifyListeners();
+  }
+
+  getMyFollowing() async {
+    myFollowing = await _userRepository.getAllMyFollowing();
+    print("PROVIDER ");
+    print(myFollowing);
+  }
+
+  getMyFollowers() async {
+    myFollowers = await _userRepository.getAllMyFollowers();
   }
 }

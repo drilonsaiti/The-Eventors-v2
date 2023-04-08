@@ -141,11 +141,13 @@ class _ActivityPerEventScreenState extends State<ActivityPerEventScreen> {
                                                   data: [
                                                     {
                                                       'domain': 'Going',
-                                                      'measure': 1
+                                                      'measure':
+                                                          data.activity.going
                                                     },
                                                     {
                                                       'domain': 'Interested',
-                                                      'measure': 1
+                                                      'measure': data
+                                                          .activity.interested
                                                     },
                                                   ],
                                                   fillColor: (pieData, index) {
@@ -234,13 +236,13 @@ class _ActivityPerEventScreenState extends State<ActivityPerEventScreen> {
                                                   data: [
                                                     {
                                                       'domain': 'Followers',
-                                                      'measure':
-                                                          data.activity.going
+                                                      'measure': data
+                                                          .activity.followers
                                                     },
                                                     {
                                                       'domain': 'Anonymous',
                                                       'measure': data
-                                                          .activity.interested
+                                                          .activity.anonymous
                                                     },
                                                     {
                                                       'domain': 'Users',

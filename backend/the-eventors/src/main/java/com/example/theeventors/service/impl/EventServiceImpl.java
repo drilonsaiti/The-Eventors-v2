@@ -77,23 +77,15 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<ListingEventDtoResponse> findAllHomeScreen(String username) {
-        System.out.println("=================FEED======================");
-        User u = this.userRepository.findByUsername(jwtService.extractUsername(username)).orElseThrow();
-        List<Event> list = this.eventRepository.findAll().stream().filter(e -> ChronoUnit.HOURS.between(e.getEventTimes().getStartTime(), LocalDateTime.now()) >= 0).toList();
-        List<Event> add = new ArrayList<>();
-        for (Event event : list) {
-            String following = event.getEventInfo().getCreatedBy();
-            System.out.println(following);
-            System.out.println(u.getFollowing().stream().anyMatch(f -> f.equals(following)));
-            System.out.println(event.getEventInfo().getCreatedBy().equals(u.getUsername()));
-            if (u.getFollowing().stream().anyMatch(f -> f.equals(following)) || event.getEventInfo().getCreatedBy().equals(u.getUsername())) {
-                System.out.println(event.getEventInfo().getTitle());
-                add.add(event);
-            }
-        }
-        return add
-                .stream()
-                .map(listingMapper).collect(Collectors.toList());
+        User user = this.userRepository.findByUsername(jwtService.extractUsername(username)).orElseThrow();
+        List<Event> events = this.eventRepository.findAll().stream().filter(e -> ChronoUnit.HOURS.between(e.getEventTimes().getStartTime(), LocalDateTime.now()) >= 0).toList();
+        List<Event> filteredEvents = events.stream()
+                .filter(event -> event.getEventInfo().getCreatedBy().equals(user.getUsername())
+                        || user.getFollowing().contains(event.getEventInfo().getCreatedBy()))
+                .collect(Collectors.toList());
+        return filteredEvents.stream()
+                .map(listingMapper)
+                .collect(Collectors.toList());
     }
 
 

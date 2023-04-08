@@ -3,7 +3,6 @@ import 'package:flutter_pin_code_fields/flutter_pin_code_fields.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import 'package:provider/provider.dart';
-import 'package:the_eventors/repository/UserRepository.dart';
 import 'package:the_eventors/ui/forgot_pass.dart';
 import 'package:the_eventors/ui/profile_screen.dart';
 

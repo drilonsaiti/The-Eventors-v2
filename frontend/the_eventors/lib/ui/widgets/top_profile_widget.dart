@@ -9,10 +9,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 import 'package:intl/intl.dart';
+import 'package:the_eventors/ui/list_my_followers_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../models/ImageHelper.dart';
 import '../../models/dto/UserProfileDto.dart';
 import '../../providers/UserProvider.dart';
+import '../list_my_following_screen.dart';
 
 class TopProfileWidget extends StatefulWidget {
   final bool isFollowing;
@@ -222,36 +224,62 @@ class _TopProfileWidgetState extends State<TopProfileWidget> {
                   ),
                   Column(
                     children: [
-                      Text(
-                          NumberFormat.compact()
-                              .format(widget.profile.countFollowers)
-                              .toString(),
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17.sp,
-                              color: Color(0xFFEEFBFB))),
-                      Text("Followers",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12.sp,
-                              color: Color(0xFFEEFBFB))),
+                      InkWell(
+                          onTap: () => Navigator.of(context)
+                              .push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      const MyFollowersScreen()))
+                              .then((value) => setState(() {
+                                    initState();
+                                  })),
+                          child: Text(
+                              NumberFormat.compact()
+                                  .format(widget.profile.countFollowers)
+                                  .toString(),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17.sp,
+                                  color: Color(0xFFEEFBFB)))),
+                      InkWell(
+                          onTap: () => Navigator.of(context)
+                              .push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      const MyFollowersScreen()))
+                              .then((value) => setState(() {
+                                    initState();
+                                  })),
+                          child: Text("Followers",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12.sp,
+                                  color: Color(0xFFEEFBFB)))),
                     ],
                   ),
                   Column(
                     children: [
-                      Text(
-                          NumberFormat.compact()
-                              .format(widget.profile.countFollowing)
-                              .toString(),
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17.sp,
-                              color: Color(0xFFEEFBFB))),
-                      Text("Following",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12.sp,
-                              color: Color(0xFFEEFBFB))),
+                      InkWell(
+                          onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const MyFollowingScreen())),
+                          child: Text(
+                              NumberFormat.compact()
+                                  .format(widget.profile.countFollowing)
+                                  .toString(),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17.sp,
+                                  color: Color(0xFFEEFBFB)))),
+                      InkWell(
+                          onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const MyFollowingScreen())),
+                          child: Text("Following",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12.sp,
+                                  color: Color(0xFFEEFBFB)))),
                     ],
                   ),
                 ],

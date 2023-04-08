@@ -54,7 +54,7 @@ public class DashboardController {
         if (req.getSession().getAttribute("username") != null) {
             String username = req.getSession().getAttribute("username").toString();
             User u = this.userService.findByUsername(username).orElseThrow();
-            if(u.getRole().equals(Role.ROLE_ADMIN) || u.getRole().equals(Role.ROLE_EDITOR)) {
+            if(u.getRole().equals(Role.ROLE_USER) || u.getRole().equals(Role.ROLE_EDITOR)) {
                 this.eventService.findAll().forEach(e -> {
                     if (Objects.equals(e.category(), "Sports")) sports.getAndIncrement();
                     if (Objects.equals(e.category(), "Music")) music.getAndIncrement();
@@ -72,7 +72,7 @@ public class DashboardController {
                 map.put("Arts", arts.get());
                 model.addAttribute("categories", map);
                 model.addAttribute("eventsSize", this.eventService.findAll().size());
-                model.addAttribute("events", this.eventService.findAll().stream().sorted().limit(10).toList());
+                model.addAttribute("events", this.eventService.findAll().stream().limit(10).toList());
                 model.addAttribute("username", u.getUsername());
                 model.addAttribute("users", this.reportService.findAll());
                 model.addAttribute("usersSize", this.userService.findAll().stream().filter(us -> us.getRole() == Role.ROLE_USER).toList().size());
@@ -93,7 +93,7 @@ public class DashboardController {
         if (req.getSession().getAttribute("username") != null) {
             String username = req.getSession().getAttribute("username").toString();
             User u = this.userService.findByUsername(username).orElseThrow();
-            if (u.getRole().equals(Role.ROLE_ADMIN) || u.getRole().equals(Role.ROLE_EDITOR)) {
+            if (u.getRole().equals(Role.ROLE_USER) || u.getRole().equals(Role.ROLE_EDITOR)) {
                 model.addAttribute("types", Role.values());
                 return "change-role";
             }
@@ -122,7 +122,7 @@ public class DashboardController {
         if (req.getSession().getAttribute("username") != null) {
             String username = req.getSession().getAttribute("username").toString();
             User u = this.userService.findByUsername(username).orElseThrow();
-            if (u.getRole().equals(Role.ROLE_ADMIN) || u.getRole().equals(Role.ROLE_EDITOR)) {
+            if (u.getRole().equals(Role.ROLE_USER) || u.getRole().equals(Role.ROLE_EDITOR)) {
                 model.addAttribute("bodyContent", "register");
                 return "register";
             }return "redirect:/dashboard";
@@ -198,6 +198,6 @@ public class DashboardController {
     @PostMapping("events/{id}/delete")
     public String deleteEvent(@PathVariable Long id) {
         this.eventService.delete(id);
-        return "redirect:/events";
+        return "redirect:/dashboard";
     }
 }

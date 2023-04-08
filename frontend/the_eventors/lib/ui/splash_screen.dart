@@ -35,31 +35,45 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-        colors: [
-          Theme.of(context).colorScheme.secondary,
-          Theme.of(context).primaryColor
-        ],
-        begin: const FractionalOffset(0, 0),
-        end: const FractionalOffset(1.0, 0.0),
-        stops: const [0.0, 1.0],
-        tileMode: TileMode.clamp,
-      )),
-      child: AnimatedOpacity(
-        opacity: 1.0,
-        duration: const Duration(milliseconds: 1200),
-        child: Center(
-            child: Container(
-          height: 140.0,
-          width: 140.0,
-          child: const Center(
-              child: ClipOval(
-            child: Icon(Icons.android_outlined),
-          )),
-        )),
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      builder: (context, child) {
+        return SafeArea(
+            child: Scaffold(
+          body: Container(
+            color: Color(0xFF203647),
+            child: AnimatedOpacity(
+              opacity: 1.0,
+              duration: const Duration(milliseconds: 1200),
+              child: Center(
+                  child: Container(
+                child: Center(
+                    child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ClipOval(
+                        child: Image.asset(
+                      "assets/logo-trp.png",
+                      height: 160,
+                      width: 160,
+                    )),
+                    Container(
+                        child: Text(
+                      "The eventors",
+                      style: TextStyle(
+                        fontSize: 30,
+                        color: Color(0xff4DA8DA),
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2,
+                      ),
+                    )),
+                  ],
+                )),
+              )),
+            ),
+          ),
+        ));
+      },
     );
   }
 }

@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:the_eventors/models/dto/ListingEventNearRepsonseDto.dart';
-import 'package:the_eventors/repository/EventRepository.dart';
 import 'package:the_eventors/ui/detail_event_screen.dart';
 import 'package:the_eventors/ui/multi_step_form_screen.dart';
 import 'package:the_eventors/ui/profile_screen.dart';
@@ -14,6 +13,7 @@ import 'package:the_eventors/ui/profile_screen.dart';
 import '../providers/EventProvider.dart';
 import '../providers/MyActivityProvider.dart';
 import '../providers/UserProvider.dart';
+import '../services/EventRepository.dart';
 import 'map_screen.dart';
 
 class ListAllEventScreen extends StatefulWidget {

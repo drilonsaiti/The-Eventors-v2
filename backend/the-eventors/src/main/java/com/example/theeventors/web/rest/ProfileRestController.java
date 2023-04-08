@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin
 @RequestMapping("/api/profile")
@@ -51,14 +53,14 @@ public class ProfileRestController {
 
 
     @PostMapping("/follow")
-    public ResponseEntity.BodyBuilder makeFollow(@RequestBody NotificationInfoDto dto) throws FirebaseMessagingException { //notification following
+    public ResponseEntity.BodyBuilder doFollow(@RequestBody NotificationInfoDto dto) throws FirebaseMessagingException { //notification following
         String usernameFollowing = jwtService.extractUsername(dto.getFrom());
         this.notificationInfoService.createFollow(dto, NotificationTypes.FOLLOW);
         this.service.followingUser(usernameFollowing,dto.getTo());
         return ResponseEntity.ok();
     }
     @PostMapping("/unfollow")
-    public ResponseEntity.BodyBuilder makeUnfollow( @RequestBody FollowRequestDto dto){
+    public ResponseEntity.BodyBuilder doUnfollow( @RequestBody FollowRequestDto dto){
         String usernameFollowing = jwtService.extractUsername(dto.getToken());
         this.service.unFollowingUser(usernameFollowing, dto.getUsername());
         return ResponseEntity.ok();
@@ -68,6 +70,16 @@ public class ProfileRestController {
     public ResponseEntity.BodyBuilder editProfile( @RequestBody UpdateProfileDto dto){
         this.service.updateProfile(dto);
         return ResponseEntity.ok();
+    }
+
+    @GetMapping("my-following")
+    public ResponseEntity<List<UserUsernameDto>> getMyFollowingUsers(@RequestParam String token) {
+        return ResponseEntity.ok(this.service.findAllMyFollowing(token));
+    }
+
+    @GetMapping("my-followers")
+    public ResponseEntity<List<UserUsernameDto>> getMyFollowersUsers(@RequestParam String token) {
+        return ResponseEntity.ok(this.service.findAllMyFollowers(token));
     }
 }
 

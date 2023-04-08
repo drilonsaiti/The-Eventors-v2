@@ -115,6 +115,9 @@ flutter:
   assets:
      - assets/profile_image.png
      - assets/close-48.png
+     - assets/logo-trp.png
+     - assets/logo.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

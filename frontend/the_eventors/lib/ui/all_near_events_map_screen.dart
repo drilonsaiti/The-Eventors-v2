@@ -111,7 +111,7 @@ class _AllNearEventsMapScreenState extends State<AllNearEventsMapScreen> {
     Provider.of<EventProvider>(context, listen: false).getAllNearForMap();
     markers = <MarkerId, Marker>{};
 
-    Future.delayed(Duration(seconds: 4), () {
+    Future.delayed(Duration(seconds: 3), () {
       setState(() {
         events = context.read<EventProvider>().allNearForMap;
       });

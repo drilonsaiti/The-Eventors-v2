@@ -222,5 +222,6 @@ public class MyActivityServiceImpl implements MyActivityService {
     public void doAllRead(String token) {
         User u = this.userRepository.findByUsername(jwtService.extractUsername(token)).orElseThrow();
         u.getNotification().getNotifications().stream().filter(n -> !n.isRead()).forEach(n -> n.setRead(true));
+        this.userRepository.save(u);
     }
 }

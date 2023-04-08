@@ -13,7 +13,6 @@ import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 import 'package:the_eventors/package/gallery_image/galleryimage.dart';
 import 'package:the_eventors/providers/EventProvider.dart';
-import 'package:the_eventors/repository/MyActivityRepository.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/Events.dart';
@@ -22,6 +21,7 @@ import '../../models/dto/NotificationInfoDto.dart';
 import '../../models/dto/UserUsernameDto.dart';
 import '../../providers/MyActivityProvider.dart';
 import '../../providers/UserProvider.dart';
+import '../../services/MyActivityRepository.dart';
 import '../map_screen.dart';
 import '../profile_screen.dart';
 

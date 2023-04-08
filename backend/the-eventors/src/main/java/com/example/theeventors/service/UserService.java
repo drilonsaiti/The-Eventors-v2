@@ -45,5 +45,13 @@ public interface UserService extends UserDetailsService {
      void sendVerificationEmail(VerificationDto dto) throws MessagingException, IOException, GeneralSecurityException;
 
     void updateProfile(UpdateProfileDto dto);
+
+    List<String> myFollowing(String token);
+
+    List<String> myFollowers(String token);
+
+    List<UserUsernameDto> findAllMyFollowing(String token);
+
+    List<UserUsernameDto> findAllMyFollowers(String token);
 }
 

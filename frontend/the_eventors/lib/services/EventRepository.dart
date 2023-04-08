@@ -68,7 +68,7 @@ class EventRepository {
     http.Response response = token.isNotEmpty
         ? await _apiService.get("/events/$id/details")
         : await _apiService.get("/events/$id/details");*/
-    http.Response response = await _apiService.get("/events/$id/details");
+    http.Response response = await _apiService.get("/events/details/$id");
     print(response.body);
     if (response.statusCode == 200) {
       return Events.fromJson(jsonDecode(response.body));

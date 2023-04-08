@@ -9,8 +9,6 @@ import 'package:the_eventors/models/dto/ListingTopEventRepsonseDto.dart';
 import 'package:the_eventors/models/dto/MyEventResponseDto.dart';
 import 'package:the_eventors/models/dto/NearEventForMapDto.dart';
 import 'package:the_eventors/providers/MyActivityProvider.dart';
-import 'package:the_eventors/repository/CategoryRepository.dart';
-import 'package:the_eventors/repository/EventRepository.dart';
 
 import '../models/Category.dart';
 import '../models/Events.dart';
@@ -18,6 +16,7 @@ import '../models/dto/ActivityOfEventDto.dart';
 import '../models/dto/EventForSearchDto.dart';
 import '../models/dto/ListingEventRepsonseDto.dart';
 import '../models/dto/NotificationInfoDto.dart';
+import '../services/EventRepository.dart';
 
 class EventProvider extends ChangeNotifier {
   final EventRepository _eventCategory = EventRepository();

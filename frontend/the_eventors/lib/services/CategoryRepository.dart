@@ -20,8 +20,10 @@ class CategoryRepository {
   Future<List<Category>> getCategories() async {
     http.Response response = await _apiService.get("/categories");
     List<Category> categories = [];
-    for (var c in json.decode(response.body)) {
-      categories.add(Category.fromJson(c));
+    if (response.statusCode == 200) {
+      for (var c in json.decode(response.body)) {
+        categories.add(Category.fromJson(c));
+      }
     }
 
     return categories;

@@ -5,6 +5,7 @@ import 'package:badges/badges.dart' as badges;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_share/flutter_share.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -21,8 +22,9 @@ import 'package:uuid/uuid.dart';
 import '../models/dto/ListingEventRepsonseDto.dart';
 import '../providers/EventProvider.dart';
 import '../providers/UserProvider.dart';
-import '../repository/EventRepository.dart';
-import '../repository/MyActivityRepository.dart';
+
+import '../services/EventRepository.dart';
+import '../services/MyActivityRepository.dart';
 import 'all_near_events_map_screen.dart';
 import 'bottom_bar.dart';
 import 'map_screen.dart';
@@ -39,6 +41,8 @@ class _HomeScreenState extends State<HomeScreen> {
   List<int> bookmarks = [];
   bool checkLogin = false;
   String screen = "home";
+  bool notifications = false;
+
   final ScrollController _scrollController = ScrollController();
   checkLoginFunc() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -58,6 +62,8 @@ class _HomeScreenState extends State<HomeScreen> {
     FocusManager.instance.primaryFocus?.unfocus();
     // TODO: implement initState
     checkLoginFunc();
+    checkNotifications();
+
     //subscription =
     //  Connectivity().onConnectivityChanged.listen(showConnectivitySnackBar);
 
@@ -77,14 +83,17 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+  checkNotifications() {}
+  void notificationsStatus() {
+    setState(() async {
+      notifications = await MyActivityRepository().checkNoReadNotifications();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    print("MY ACTIVITYYYYY");
-    bool notifications = false;
-    MyActivityRepository()
-        .checkNoReadNotifications()
-        .then((value) => notifications = value);
-    print(notifications);
+    Provider.of<MyActivityProvider>(context).notificationsStatus();
+
     RefreshController _refreshController =
         RefreshController(initialRefresh: false);
 
@@ -175,18 +184,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ));
                                     },
                                     icon: Column(children: [
-                                      if (!notifications)
-                                        SizedBox(
-                                          height: 4,
-                                        ),
-                                      if (!notifications)
+                                      SizedBox(
+                                        height: 3,
+                                      ),
+                                      if (!context
+                                          .read<MyActivityProvider>()
+                                          .notifications)
                                         const badges.Badge(
                                           badgeContent: Text(''),
                                           child: Icon(
                                               Icons.notifications_outlined),
                                         ),
-                                      if (notifications)
-                                        Icon(Icons.notifications)
+                                      if (context
+                                          .read<MyActivityProvider>()
+                                          .notifications)
+                                        Icon(Icons.notifications_outlined)
                                     ]),
                                     color: Color(0xFFEEFBFB)),
                                 IconButton(
@@ -805,7 +817,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                             iconSize:
                                                                                 35.sp,
                                                                             onPressed:
-                                                                                () {},
+                                                                                () async {
+                                                                              await FlutterShare.share(title: snapshot.data!.title, text: snapshot.data!.title + "\n" + snapshot.data!.startDateTime + "\n" + snapshot.data!.category, linkUrl: '192.168.1.8:9090/#/details/${snapshot.data!.id}', chooserTitle: 'Example Chooser Title');
+                                                                            },
                                                                           ),
                                                                         ],
                                                                       ),

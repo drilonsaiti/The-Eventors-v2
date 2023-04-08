@@ -17,8 +17,8 @@ import 'package:the_eventors/ui/widgets/events_card_search.dart';
 import '../models/Category.dart';
 import '../models/Events.dart';
 import '../providers/EventProvider.dart';
-import '../repository/EventRepository.dart';
-import '../repository/MyActivityRepository.dart';
+import '../providers/MyActivityProvider.dart';
+import '../services/EventRepository.dart';
 import 'all_near_events_map_screen.dart';
 import 'home_screen.dart';
 import 'list_allevents_by_selected.dart';
@@ -76,10 +76,8 @@ class _SearchEventScreenState extends State<SearchEventScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool notifications = false;
-    MyActivityRepository()
-        .checkNoReadNotifications()
-        .then((value) => notifications = value);
+    Provider.of<MyActivityProvider>(context).notificationsStatus();
+
     final theme = Theme.of(context);
     return isLoading
         ? Scaffold(
@@ -150,17 +148,25 @@ class _SearchEventScreenState extends State<SearchEventScreen> {
                                         ));
                                   },
                                   icon: Column(children: [
-                                    if (!notifications)
-                                      SizedBox(
-                                        height: 4,
-                                      ),
-                                    if (!notifications)
+                                    SizedBox(
+                                      height: 3,
+                                    ),
+                                    if (!context
+                                        .read<MyActivityProvider>()
+                                        .notifications)
                                       const badges.Badge(
                                         badgeContent: Text(''),
                                         child:
-                                            Icon(Icons.notifications_outlined),
+                                            Icon(Icons.notifications_outlined,
+                                          color: Color(0xFFEEFBFB),
+                                        ),
                                       ),
-                                    if (notifications) Icon(Icons.notifications)
+                                    if (context
+                                        .read<MyActivityProvider>()
+                                        .notifications)
+                                      Icon(Icons.notifications_outlined,
+                                        color: Color(0xFFEEFBFB),
+                                      )
                                   ]),
                                 ),
                                 IconButton(

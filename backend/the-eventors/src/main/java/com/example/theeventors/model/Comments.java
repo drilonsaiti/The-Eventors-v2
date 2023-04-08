@@ -1,6 +1,5 @@
 package com.example.theeventors.model;
 
-import com.example.theeventors.comperator.CommentsOrderByCreateAt;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -403,4 +403,52 @@ class UserRepository {
         await _apiService.post("/users/delete-account", jsonMap);
     print(response.body);
   }
+
+  Future<List<String>> myFollowing() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+
+    Map<String, dynamic> jsonMap = {
+      'token': pref.getString('token'),
+    };
+    http.Response response =
+        await _apiService.post("/users/my-following", jsonMap);
+    List<String> list = [];
+    List jsonResponse = json.decode(response.body);
+    jsonResponse.map((e) => list.add(e));
+    return list;
+  }
+
+  Future<List<String>> myFollowers() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+
+    Map<String, dynamic> jsonMap = {
+      'token': pref.getString('token'),
+    };
+    http.Response response =
+        await _apiService.post("/users/my-followers", jsonMap);
+    List<String> list = [];
+    List jsonResponse = json.decode(response.body);
+    jsonResponse.map((e) => list.add(e));
+    return list;
+  }
+
+  Future<List<UserUsernameDto>> getAllMyFollowing() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? token = pref.getString('token');
+    http.Response response =
+        await _apiService.get("/profile/my-following?token=${token}");
+    List jsonResponse = json.decode(response.body);
+
+    return jsonResponse.map((u) => UserUsernameDto.fromJson(u)).toList();
+  }
+
+  Future<List<UserUsernameDto>> getAllMyFollowers() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? token = pref.getString('token');
+    http.Response response =
+        await _apiService.get("/profile/my-followers?token=${token}");
+    List jsonResponse = json.decode(response.body);
+
+    return jsonResponse.map((u) => UserUsernameDto.fromJson(u)).toList();
+  }
 }

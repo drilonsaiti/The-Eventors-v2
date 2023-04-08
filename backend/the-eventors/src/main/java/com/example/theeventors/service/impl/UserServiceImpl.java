@@ -99,12 +99,9 @@ public class UserServiceImpl implements UserService {
         List<User> add = new ArrayList<>();
         for (User us : this.userRepository.findAll()) {
             String following = us.getUsername();
-            if (!u.getUsername().equals(following) && u.getFollowing().stream().noneMatch(f -> f.equals(following))) {
+            if (!u.getUsername().equals(following) && u.getFollowing().stream().noneMatch(f -> f.equals(following)) && (u.getRole() != Role.ROLE_ADMIN && u.getRole() != Role.ROLE_EDITOR)) {
                 add.add(us);
             }
-        }
-        for (User us : add) {
-            System.out.println(us.getUsername());
         }
         return add
                 .stream()
@@ -335,6 +332,52 @@ public class UserServiceImpl implements UserService {
         }
 
         this.userRepository.save(u);
+    }
+
+    @Override
+    public List<String> myFollowing(String token) {
+        String username = jwtService.extractUsername(token);
+        User u = this.userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+
+        return u.getFollowing();
+    }
+
+    @Override
+    public List<String> myFollowers(String token) {
+        String username = jwtService.extractUsername(token);
+        User u = this.userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+
+        return u.getFollowers();
+    }
+
+    @Override
+    public List<UserUsernameDto> findAllMyFollowing(String token) {
+        String username = jwtService.extractUsername(token);
+        User u = this.userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+            List<User> add = new ArrayList<>();
+            for (String us : u.getFollowing()) {
+                User follow = this.userRepository.findByUsername(us).orElseThrow(() -> new UsernameNotFoundException(username));
+                add.add(follow);
+            }
+            return add
+                    .stream()
+                    .map(mapper).collect(Collectors.toList());
+
+    }
+
+    @Override
+    public List<UserUsernameDto> findAllMyFollowers(String token) {
+        String username = jwtService.extractUsername(token);
+        User u = this.userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+        List<User> add = new ArrayList<>();
+        for (String us : u.getFollowers()) {
+            User follow = this.userRepository.findByUsername(us).orElseThrow(() -> new UsernameNotFoundException(username));
+            add.add(follow);
+        }
+        return add
+                .stream()
+                .map(mapper).collect(Collectors.toList());
+
     }
 }
 

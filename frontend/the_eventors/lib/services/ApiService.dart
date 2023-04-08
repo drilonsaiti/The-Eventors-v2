@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class APIService {
-  final String baseUrl = "http://192.168.1.6:8080/api";
+  final String baseUrl = "http://192.168.1.2:8080/api";
 
   Map<String, String> headers = {
     "content-type": "application/json",
@@ -10,6 +11,9 @@ class APIService {
   };
 
   Future<http.Response> get(String url) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? token = pref.getString('token') ?? '';
+    headers.putIfAbsent("Authorization", () => "Bearer " + token);
     try {
       Uri uri = Uri.parse(baseUrl + url);
       http.Response response = await http.get(uri, headers: headers);
@@ -20,6 +24,9 @@ class APIService {
   }
 
   Future<http.Response> getWithBody(String url, String token) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? token = pref.getString('token') ?? '';
+    headers.putIfAbsent("Authorization", () => "Bearer " + token);
     try {
       final queryParameters = {
         'token': token,
@@ -36,6 +43,9 @@ class APIService {
   }
 
   Future<http.Response> post(String url, Map<String, dynamic> body) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? token = pref.getString('token') ?? '';
+    headers.putIfAbsent("Authorization", () => "Bearer " + token);
     try {
       Uri uri = Uri.parse(baseUrl + url);
       String bodyString = json.encode(body);
@@ -48,6 +58,9 @@ class APIService {
   }
 
   Future<http.Response> put(String url, Map<String, dynamic> body) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? token = pref.getString('token') ?? '';
+    headers.putIfAbsent("Authorization", () => "Bearer " + token);
     try {
       Uri uri = Uri.parse(baseUrl + url);
       String bodyString = json.encode(body);
@@ -60,6 +73,9 @@ class APIService {
   }
 
   Future<http.Response> delete(String url, Map<String, dynamic> body) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? token = pref.getString('token') ?? '';
+    headers.putIfAbsent("Authorization", () => "Bearer " + token);
     try {
       Uri uri = Uri.parse(baseUrl + url);
       String bodyString = json.encode(body);
